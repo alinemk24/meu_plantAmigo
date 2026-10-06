@@ -1,0 +1,3866 @@
+/* Meu PlantAmigo — versão em arquivo único (gerada a partir da pasta css/).
+   Para publicar, use este arquivo no lugar de style.css + pastas. */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap');
+
+
+/* >>>>>>>>>> base.css <<<<<<<<<< */
+
+/* ==========================================================
+   BASE — cores, medidas, reset, cabeçalho e navegação
+   Tudo aqui vale para o app inteiro.
+========================================================== */
+
+
+/* =========================
+   TOKENS
+   Mudou uma cor ou medida aqui, mudou no app todo.
+========================= */
+
+:root {
+    /* Cores principais */
+    --fundo-item: #d7f2f8;        /* fundo neutro de opções, chips e acordeões dentro dos cards */
+    --card: #FFFFFF;
+    --texto: #2E2C28;
+    --texto-suave: #4D4B45;       /* texto de apoio: escuro o bastante para ler fácil */
+    --tinta: #2E2C28;             /* títulos, logotipo e destaques: tinta escura */
+
+    --menta: #DEF8C8;
+    --menta-forte: #9FD8C0;
+    --rosa: #F7D7EB;
+    --pessego: #FFE3CF;
+    --agua: #CFEBFA;
+
+    /* Superfícies e linhas */
+    --fundo-app: #EEF7F2;         /* fundo de todas as telas (menta clarinha) */
+    --painel: #FFFFFF;            /* painel de leitura (sem sombra, só um fio em volta) */
+    --fio-painel: #D2E8DC;        /* fio que define o painel sobre o fundo */
+    --painel-atencao: #FFF3EA;    /* atenção gentil: só no quiz ("quase lá") */
+    --fundo-acerto: #F3FBF7;      /* acerto e item selecionado */
+    --trilho: #D3E8DD;            /* fundo das barras de progresso */
+    --linha-suave: #E0EEE6;       /* divisor entre itens de lista */
+    --linha: rgba(30, 59, 62, 0.12);   /* divisor dentro de painéis */
+
+    /* Texto sobre cor */
+    --verde-escuro: #1F4D3D;      /* sobre menta-forte */
+    --marrom-atencao: #8A4B1E;    /* sobre pêssego */
+    --petroleo: #0F4A55;          /* sobre o botão principal */
+
+    /* Botão de ação principal */
+    --grad-acao: linear-gradient(135deg, #8BDCF7, #9BE8C6);
+    --sombra-acao: 0 10px 22px rgba(91, 184, 214, 0.28);
+    --sombra-acao-pressionado: 0 4px 10px rgba(91, 184, 214, 0.25);
+
+    --sombra: 0 6px 20px rgba(30, 59, 62, 0.10);
+
+    /* Medidas */
+    --largura: 520px;
+    --gutter: clamp(16px, 5vw, 28px);
+    --nav-altura: 68px;
+
+    /* Card/painel das páginas */
+    --raio-modulo: 28px;
+
+    /* assinatura: canto de folha (dois cantos redondos, dois quase retos) */
+    --raio-folha: 34px 8px 34px 8px;
+    --raio-folha-pequena: 14px 4px 14px 4px;
+    --pad-modulo: clamp(20px, 5.5vw, 28px);
+
+    /* Texto de itens de lista (título + descrição) */
+    --item-titulo: clamp(14.5px, 3.8vw, 16px);
+    --item-texto: clamp(12.5px, 3.4vw, 14px);
+}
+
+
+/* =========================
+   RESET
+========================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    font-family: 'Nunito', sans-serif;
+    color: var(--texto);
+    background-color: var(--fundo-app);
+
+    /* espaço para a navegação fixa + área segura do celular */
+    padding-bottom: calc(var(--nav-altura) + 40px + env(safe-area-inset-bottom, 0px));
+
+    overflow-x: hidden;
+}
+
+a:focus-visible {
+    outline: 3px solid var(--menta-forte);
+    outline-offset: 3px;
+}
+
+
+/* =========================
+   LARGURA DO CONTEÚDO
+========================= */
+
+header,
+main {
+    width: min(100%, var(--largura));
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+}
+
+main {
+    --espaco-secao: clamp(32px, 8vw, 48px);
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    padding-top: max(clamp(16px, 4vw, 24px), env(safe-area-inset-top, 0px));
+}
+
+/* Logo: aparece como imagem de fundo; o texto "Meu PlantAmigo"
+   continua no HTML (leitores de tela e busca), só não aparece.
+   O caminho é relativo a este arquivo: coloque o arquivo em IMG/. */
+header .titulo {
+    flex-shrink: 0;
+
+    height: clamp(30px, 8.4vw, 34px);
+    aspect-ratio: 1100 / 154;
+
+    font-size: 0;
+    color: transparent;
+    overflow: hidden;
+
+    background: url('../IMG/logotipo-plantamigo.png') left center / contain no-repeat;
+}
+
+/* Nas lições e nos quizzes o logotipo fica menor, para o conteúdo ser o destaque */
+body:has(main.licao) header .titulo,
+body:has(main.quiz) header .titulo {
+    height: clamp(22px, 6.2vw, 26px);
+}
+
+/* Engrenagem: selinho de folha + ícone Phosphor (duotone) */
+.configuracoes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+
+    font-size: 0;            /* se sobrar algum emoji no HTML, ele não aparece */
+    color: var(--tinta);
+    text-decoration: none;
+
+    background-color: var(--card);
+    border-radius: var(--raio-folha-pequena);
+    box-shadow: var(--sombra);
+
+    transition: transform 0.2s ease;
+}
+
+.configuracoes::before {
+    content: "";
+
+    width: 26px;
+    height: 26px;
+
+    background-color: currentColor;
+
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' %3E%3Cpath d='M230.1,108.76,198.25,90.62c-.64-1.16-1.31-2.29-2-3.41l-.12-36A104.61,104.61,0,0,0,162,32L130,49.89c-1.34,0-2.69,0-4,0L94,32A104.58,104.58,0,0,0,59.89,51.25l-.16,36c-.7,1.12-1.37,2.26-2,3.41l-31.84,18.1a99.15,99.15,0,0,0,0,38.46l31.85,18.14c.64,1.16,1.31,2.29,2,3.41l.12,36A104.61,104.61,0,0,0,94,224l32-17.87c1.34,0,2.69,0,4,0L162,224a104.58,104.58,0,0,0,34.08-19.25l.16-36c.7-1.12,1.37-2.26,2-3.41l31.84-18.1A99.15,99.15,0,0,0,230.1,108.76ZM128,168a40,40,0,1,1,40-40A40,40,0,0,1,128,168Z' opacity='0.2'/%3E%3Cpath d='M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm109.94-52.79a8,8,0,0,0-3.89-5.4l-29.83-17-.12-33.62a8,8,0,0,0-2.83-6.08,111.91,111.91,0,0,0-36.72-20.67,8,8,0,0,0-6.46.59L128,41.85,97.88,25a8,8,0,0,0-6.47-.6A111.92,111.92,0,0,0,54.73,45.15a8,8,0,0,0-2.83,6.07l-.15,33.65-29.83,17a8,8,0,0,0-3.89,5.4,106.47,106.47,0,0,0,0,41.56,8,8,0,0,0,3.89,5.4l29.83,17,.12,33.63a8,8,0,0,0,2.83,6.08,111.91,111.91,0,0,0,36.72,20.67,8,8,0,0,0,6.46-.59L128,214.15,158.12,231a7.91,7.91,0,0,0,3.9,1,8.09,8.09,0,0,0,2.57-.42,112.1,112.1,0,0,0,36.68-20.73,8,8,0,0,0,2.83-6.07l.15-33.65,29.83-17a8,8,0,0,0,3.89-5.4A106.47,106.47,0,0,0,237.94,107.21Zm-15,34.91-28.57,16.25a8,8,0,0,0-3,3c-.58,1-1.19,2.06-1.81,3.06a7.94,7.94,0,0,0-1.22,4.21l-.15,32.25a95.89,95.89,0,0,1-25.37,14.3L134,199.13a8,8,0,0,0-3.91-1h-.19c-1.21,0-2.43,0-3.64,0a8.1,8.1,0,0,0-4.1,1l-28.84,16.1A96,96,0,0,1,67.88,201l-.11-32.2a8,8,0,0,0-1.22-4.22c-.62-1-1.23-2-1.8-3.06a8.09,8.09,0,0,0-3-3.06l-28.6-16.29a90.49,90.49,0,0,1,0-28.26L61.67,97.63a8,8,0,0,0,3-3c.58-1,1.19-2.06,1.81-3.06a7.94,7.94,0,0,0,1.22-4.21l.15-32.25a95.89,95.89,0,0,1,25.37-14.3L122,56.87a8,8,0,0,0,4.1,1c1.21,0,2.43,0,3.64,0a8,8,0,0,0,4.1-1l28.84-16.1A96,96,0,0,1,188.12,55l.11,32.2a8,8,0,0,0,1.22,4.22c.62,1,1.23,2,1.8,3.06a8.09,8.09,0,0,0,3,3.06l28.6,16.29A90.49,90.49,0,0,1,222.9,142.12Z'/%3E%3C/svg%3E") no-repeat center / contain;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' %3E%3Cpath d='M230.1,108.76,198.25,90.62c-.64-1.16-1.31-2.29-2-3.41l-.12-36A104.61,104.61,0,0,0,162,32L130,49.89c-1.34,0-2.69,0-4,0L94,32A104.58,104.58,0,0,0,59.89,51.25l-.16,36c-.7,1.12-1.37,2.26-2,3.41l-31.84,18.1a99.15,99.15,0,0,0,0,38.46l31.85,18.14c.64,1.16,1.31,2.29,2,3.41l.12,36A104.61,104.61,0,0,0,94,224l32-17.87c1.34,0,2.69,0,4,0L162,224a104.58,104.58,0,0,0,34.08-19.25l.16-36c.7-1.12,1.37-2.26,2-3.41l31.84-18.1A99.15,99.15,0,0,0,230.1,108.76ZM128,168a40,40,0,1,1,40-40A40,40,0,0,1,128,168Z' opacity='0.2'/%3E%3Cpath d='M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm109.94-52.79a8,8,0,0,0-3.89-5.4l-29.83-17-.12-33.62a8,8,0,0,0-2.83-6.08,111.91,111.91,0,0,0-36.72-20.67,8,8,0,0,0-6.46.59L128,41.85,97.88,25a8,8,0,0,0-6.47-.6A111.92,111.92,0,0,0,54.73,45.15a8,8,0,0,0-2.83,6.07l-.15,33.65-29.83,17a8,8,0,0,0-3.89,5.4,106.47,106.47,0,0,0,0,41.56,8,8,0,0,0,3.89,5.4l29.83,17,.12,33.63a8,8,0,0,0,2.83,6.08,111.91,111.91,0,0,0,36.72,20.67,8,8,0,0,0,6.46-.59L128,214.15,158.12,231a7.91,7.91,0,0,0,3.9,1,8.09,8.09,0,0,0,2.57-.42,112.1,112.1,0,0,0,36.68-20.73,8,8,0,0,0,2.83-6.07l.15-33.65,29.83-17a8,8,0,0,0,3.89-5.4A106.47,106.47,0,0,0,237.94,107.21Zm-15,34.91-28.57,16.25a8,8,0,0,0-3,3c-.58,1-1.19,2.06-1.81,3.06a7.94,7.94,0,0,0-1.22,4.21l-.15,32.25a95.89,95.89,0,0,1-25.37,14.3L134,199.13a8,8,0,0,0-3.91-1h-.19c-1.21,0-2.43,0-3.64,0a8.1,8.1,0,0,0-4.1,1l-28.84,16.1A96,96,0,0,1,67.88,201l-.11-32.2a8,8,0,0,0-1.22-4.22c-.62-1-1.23-2-1.8-3.06a8.09,8.09,0,0,0-3-3.06l-28.6-16.29a90.49,90.49,0,0,1,0-28.26L61.67,97.63a8,8,0,0,0,3-3c.58-1,1.19-2.06,1.81-3.06a7.94,7.94,0,0,0,1.22-4.21l.15-32.25a95.89,95.89,0,0,1,25.37-14.3L122,56.87a8,8,0,0,0,4.1,1c1.21,0,2.43,0,3.64,0a8,8,0,0,0,4.1-1l28.84-16.1A96,96,0,0,1,188.12,55l.11,32.2a8,8,0,0,0,1.22,4.22c.62,1,1.23,2,1.8,3.06a8.09,8.09,0,0,0,3,3.06l28.6,16.29A90.49,90.49,0,0,1,222.9,142.12Z'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
+.configuracoes:active {
+    transform: scale(0.92);
+}
+
+.configuracoes:focus-visible {
+    outline: 3px solid var(--menta-forte);
+    outline-offset: 3px;
+}
+
+
+/* =========================
+   NAVEGAÇÃO INFERIOR
+   Ícones SVG de linha (Lucide). A cor vem de currentColor:
+   cinza nos links normais, tinta na página atual.
+========================= */
+
+nav {
+    position: fixed;
+    z-index: 100;
+
+    left: 50%;
+    bottom: max(14px, env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%);
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+
+    width: min(calc(100% - 32px), 460px);
+    height: var(--nav-altura);
+
+    padding: 6px;
+
+    background-color: rgba(255, 255, 255, 0.92);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+
+    border-radius: 28px;
+    box-shadow: 0 8px 28px rgba(30, 59, 62, 0.16);
+}
+
+nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+
+    min-width: 0;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(12.5px, 3vw, 14px);
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--texto-suave);
+
+    border-radius: 22px;
+
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+nav a::before {
+    content: "";
+    display: block;
+
+    width: 22px;
+    height: 22px;
+
+    background-color: currentColor;
+
+    -webkit-mask: var(--icone-nav) center / contain no-repeat;
+            mask: var(--icone-nav) center / contain no-repeat;
+}
+
+/* Início — casinha */
+nav a:nth-child(1) {
+    --icone-nav: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z'/%3E%3C/svg%3E");
+}
+
+/* Cuidar — broto */
+nav a:nth-child(2) {
+    --icone-nav: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 20h10'/%3E%3Cpath d='M10 20c5.5-2.5.8-6.4 3-10'/%3E%3Cpath d='M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z'/%3E%3Cpath d='M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z'/%3E%3C/svg%3E");
+}
+
+/* Mascote — carinha sorrindo */
+nav a:nth-child(3) {
+    --icone-nav: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M8 14s1.5 2 4 2 4-2 4-2'/%3E%3Cpath d='M9 9h.01'/%3E%3Cpath d='M15 9h.01'/%3E%3C/svg%3E");
+}
+
+/* Aprender — livro aberto */
+nav a:nth-child(4) {
+    --icone-nav: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 7v14'/%3E%3Cpath d='M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z'/%3E%3C/svg%3E");
+}
+
+/* Página atual: coloque aria-current="page" no link ativo */
+nav a[aria-current="page"] {
+    background-color: var(--menta);
+    color: var(--tinta);
+    font-weight: 600;
+}
+
+nav a:active {
+    background-color: var(--rosa);
+}
+
+
+/* =========================
+   TELAS MUITO PEQUENAS
+========================= */
+
+@media (max-width: 340px) {
+    nav {
+        width: calc(100% - 20px);
+    }
+}
+
+
+/* =========================
+   TABLET E TELAS GRANDES
+========================= */
+
+@media (min-width: 700px) {
+
+    :root {
+        --largura: 720px;
+        --gutter: 40px;
+        --nav-altura: 84px;
+
+        --raio-modulo: 32px;
+        --raio-folha: 42px 10px 42px 10px;
+        --raio-folha-pequena: 16px 5px 16px 5px;
+        --pad-modulo: 32px;
+
+        --item-titulo: 22px;
+        --item-texto: 19px;
+    }
+
+    main {
+        --espaco-secao: 56px;
+    }
+
+    header .titulo {
+        height: 44px;
+    }
+
+    body:has(main.licao) header .titulo,
+    body:has(main.quiz) header .titulo {
+        height: 32px;
+    }
+
+    .configuracoes {
+        width: 56px;
+        height: 56px;
+    }
+
+    .configuracoes::before {
+        width: 32px;
+        height: 32px;
+    }
+
+    nav {
+        width: 560px;
+        bottom: 24px;
+        border-radius: 34px;
+        padding: 8px;
+    }
+
+    nav a {
+        font-size: 18px;
+        border-radius: 26px;
+    }
+
+    nav a::before {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+
+/* =========================
+   ACESSIBILIDADE
+   Quem prefere menos movimento não vê animações.
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+
+/* >>>>>>>>>> componentes.css <<<<<<<<<< */
+
+/* ==========================================================
+   COMPONENTES — peças que se repetem em várias páginas
+   Os nomes de classe são os mesmos dos HTMLs: aqui só
+   juntamos regras que estavam copiadas em vários lugares.
+   Se uma peça nova for igual a uma daqui, basta acrescentar
+   a classe dela na lista do seletor.
+========================================================== */
+
+
+/* =========================
+   1. BOTÃO DE AÇÃO PRINCIPAL
+   Um por página, sempre o que leva adiante.
+   Gradiente azul → menta + sombra suave.
+========================= */
+
+#btnRegar,
+.btnPersonalizar,
+.btnComecar,
+.btnQuiz,
+.btnProxima,
+.btnContinuar {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    color: var(--petroleo);
+    text-decoration: none;
+
+    background: var(--grad-acao);
+    border: none;
+    cursor: pointer;
+
+    box-shadow: var(--sombra-acao);
+
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+#btnRegar:hover,
+.btnPersonalizar:hover,
+.btnComecar:hover,
+.btnQuiz:hover,
+.btnProxima:hover,
+.btnContinuar:hover {
+    transform: translateY(-2px);
+}
+
+#btnRegar:active,
+.btnPersonalizar:active,
+.btnComecar:active,
+.btnQuiz:active,
+.btnProxima:active,
+.btnContinuar:active {
+    transform: translateY(2px) scale(0.99);
+    box-shadow: var(--sombra-acao-pressionado);
+}
+
+#btnRegar:focus-visible,
+.btnPersonalizar:focus-visible,
+.btnComecar:focus-visible,
+.btnQuiz:focus-visible,
+.btnProxima:focus-visible,
+.btnContinuar:focus-visible {
+    outline: 4px solid var(--tinta);
+    outline-offset: 5px;
+}
+
+/* Desativado (Regar sem reservatório, Começar sem escolhas) */
+#btnRegar:disabled,
+.btnComecar:disabled {
+    cursor: not-allowed;
+    color: var(--texto-suave);
+
+    background: #ECE6DE;
+    box-shadow: none;
+    transform: none;
+}
+
+
+/* --- Botão grande (Regar, Personalizar, Começar) --- */
+
+#btnRegar,
+.btnPersonalizar,
+.btnComecar {
+    --btn-altura: clamp(64px, 17vw, 76px);
+    --btn-raio: 24px;
+    --btn-fonte: clamp(18px, 5vw, 21px);
+    --btn-lado: 64px;           /* espaço para o ícone à esquerda */
+
+    position: relative;
+
+    display: grid;
+    place-items: center;
+
+    width: 100%;
+    min-height: var(--btn-altura);
+    padding: 12px var(--btn-lado);
+
+    font-size: var(--btn-fonte);
+    line-height: 1.25;
+
+    border-radius: var(--btn-raio);
+}
+
+/* O Regar é a ação principal do app: um pouco maior */
+#btnRegar {
+    --btn-altura: clamp(68px, 18vw, 80px);
+    --btn-raio: 26px;
+    --btn-fonte: clamp(21px, 6vw, 25px);
+}
+
+/* Ícone num círculo branco, à esquerda (a imagem de cada um
+   fica junto do botão: Regar em cuidar.css, Personalizar em
+   mascote.css) */
+#btnRegar::before,
+.btnPersonalizar::before {
+    content: "";
+
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 44px;
+    height: 44px;
+
+    background-color: rgba(255, 255, 255, 0.65);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 24px;
+
+    border-radius: 50%;
+}
+
+
+/* --- Botão em pílula (Fazer o quiz, Próxima, Continuar) --- */
+
+.btnQuiz,
+.btnProxima,
+.btnContinuar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: clamp(56px, 15vw, 64px);
+    padding: 14px 24px;
+
+    font-size: clamp(18px, 5vw, 22px);
+
+    border-radius: 999px;
+}
+
+
+/* =========================
+   2. CARD E PAINEL
+   Card branco com sombra  = bloco de atividade ou destaque.
+   Painel plano, sem sombra = bloco de leitura.
+   O tamanho muda sozinho no tablet (--pad-modulo/--raio-modulo).
+========================= */
+
+.explorarPlanta,
+.umidadeInterativa,
+.cuidadosInterativos,
+.explorarCacto,
+.desafioCacto,
+.fotossinteseLicao,
+.conhecendoCactos,
+.cuidadosCacto,
+.perguntaQuiz {
+    background-color: var(--card);
+    border-radius: var(--raio-modulo);
+    box-shadow: var(--sombra);
+    padding: var(--pad-modulo);
+}
+
+.necessidadesPlanta,
+.necessidadeAgua,
+.necessidadeLuz,
+.cuidadosImportantes,
+.guiaCacto,
+.tiposCactos,
+.sinaisPlanta {
+    background-color: var(--painel);
+    border-radius: var(--raio-modulo);
+    padding: var(--pad-modulo);
+    box-shadow: 0 0 0 2px var(--fio-painel);
+}
+
+/* Painéis de leitura: título em petróleo (a cor de destaque do app) */
+.licao :is(.necessidadesPlanta, .necessidadeAgua, .necessidadeLuz,
+           .cuidadosImportantes, .guiaCacto, .tiposCactos, .sinaisPlanta) h2 {
+    color: var(--petroleo);
+}
+
+
+/* =========================
+   3. OPÇÃO SELECIONÁVEL EM LINHA
+   Umidade (lição 2), Cuidados (lição 4) e Quiz.
+   Selecionado = menta-forte, a mesma cor em todo o app.
+========================= */
+
+.opcaoUmidade,
+.opcaoCuidado,
+.opcaoQuiz {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    width: 100%;
+    padding: clamp(13px, 3.8vw, 15px) clamp(16px, 4.5vw, 18px);
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(14px, 3.8vw, 15.5px);
+    font-weight: 600;
+    color: var(--texto);
+    text-align: left;
+
+    background-color: var(--fundo-item);
+    border: 2px solid transparent;
+    border-radius: 18px;
+    cursor: pointer;
+
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.12s ease;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* A explicação nasce dentro do botão e vai para a linha de baixo */
+.opcaoUmidade,
+.opcaoCuidado {
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.opcaoUmidade:hover:not(:disabled):not(.selecionado),
+.opcaoCuidado:hover:not(:disabled):not(.selecionado),
+.opcaoQuiz:hover:not(:disabled):not(.selecionado) {
+    border-color: rgba(159, 216, 192, 0.6);
+    transform: translateY(-1px);
+}
+
+.opcaoUmidade:focus-visible,
+.opcaoCuidado:focus-visible,
+.opcaoQuiz:focus-visible {
+    outline: 3px solid var(--menta-forte);
+    outline-offset: 2px;
+}
+
+.opcaoUmidade.selecionado,
+.opcaoCuidado.selecionado {
+    background-color: var(--menta-forte);
+    color: var(--verde-escuro);
+}
+
+/* Ícone redondo à esquerda da opção */
+.iconeUmidade,
+.iconeCuidado {
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    width: clamp(38px, 10vw, 42px);
+    aspect-ratio: 1;
+
+    font-size: clamp(18px, 5vw, 20px);
+
+    background-color: var(--card);
+    border-radius: 50%;
+
+    transition: background-color 0.15s ease;
+}
+
+.opcaoUmidade.selecionado .iconeUmidade,
+.opcaoCuidado.selecionado .iconeCuidado {
+    background-color: rgba(255, 255, 255, 0.55);
+}
+
+/* Texto que o JavaScript cria dentro da opção */
+.explicacaoUmidade,
+.explicacaoCuidado {
+    flex-basis: 100%;
+    margin-top: 10px;
+    padding-top: 10px;
+
+    border-top: 1px solid rgba(31, 77, 61, 0.15);
+
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(13px, 3.6vw, 14.5px);
+    font-weight: 600;
+    line-height: 1.5;
+    color: var(--verde-escuro);
+}
+
+
+/* =========================
+   4. ACORDEÃO (<details>)
+   Detetive dos cactos e desafio da lição 5.
+========================= */
+
+.detalheCacto,
+.respostaDesafioCacto {
+    background-color: var(--fundo-item);
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.detalheCacto summary,
+.respostaDesafioCacto summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    padding: clamp(13px, 3.8vw, 15px) clamp(16px, 4.5vw, 18px);
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(14px, 3.8vw, 15.5px);
+    font-weight: 600;
+    color: var(--texto);
+
+    list-style: none;
+    cursor: pointer;
+
+    transition: background-color 0.15s ease, color 0.15s ease, border-radius 0.15s ease;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+.detalheCacto summary::-webkit-details-marker,
+.respostaDesafioCacto summary::-webkit-details-marker {
+    display: none;
+}
+
+.detalheCacto summary:focus-visible,
+.respostaDesafioCacto summary:focus-visible {
+    outline: 3px solid var(--menta-forte);
+    outline-offset: 2px;
+}
+
+.detalheCacto[open] summary,
+.respostaDesafioCacto[open] summary {
+    background-color: var(--menta-forte);
+    color: var(--verde-escuro);
+    border-radius: 18px 18px 0 0;
+}
+
+/* Botãozinho "+" que vira "–" */
+.detalheCacto summary::after {
+    content: "+";
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    width: clamp(24px, 6.5vw, 28px);
+    aspect-ratio: 1;
+
+    font-size: clamp(16px, 4.4vw, 18px);
+    font-weight: 700;
+
+    background-color: var(--card);
+    border-radius: 50%;
+
+    transition: transform 0.2s ease, background-color 0.15s ease;
+}
+
+.detalheCacto[open] summary::after {
+    content: "–";
+    background-color: rgba(255, 255, 255, 0.55);
+}
+
+
+/* =========================
+   5. LISTAS DENTRO DE UM PAINEL
+   Duas formas, separadas por fios finos:
+   - em colunas (ícone em cima, texto centralizado)
+   - em linhas  (ícone ao lado do texto)
+========================= */
+
+/* --- em colunas: 1 por linha no celular, 3 lado a lado no tablet --- */
+
+.comparacaoLuz,
+.caracteristicasCacto,
+.sinais {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    margin-top: clamp(16px, 4vw, 20px);
+}
+
+.plantaLuz,
+.caracteristicaCacto,
+.sinal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+
+    padding: clamp(16px, 4.5vw, 20px) 4px;
+    text-align: center;
+}
+
+.plantaLuz + .plantaLuz,
+.caracteristicaCacto + .caracteristicaCacto,
+.sinal + .sinal {
+    border-top: 1px solid var(--linha);
+}
+
+.iconePlantaLuz,
+.iconeCaracteristica,
+.sinal > span {
+    font-size: clamp(30px, 8vw, 36px);
+    line-height: 1;
+}
+
+.plantaLuz p,
+.caracteristicaCacto p,
+.sinal p {
+    max-width: 26ch;
+    margin-inline: auto;
+}
+
+.caracteristicaCacto p {
+    max-width: 30ch;
+}
+
+
+/* --- em linhas: 1 coluna no celular, 2 no tablet --- */
+
+.listaCuidados,
+.passosCacto {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    margin-top: clamp(16px, 4vw, 20px);
+}
+
+.cuidado,
+.passoCacto {
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(12px, 3.6vw, 16px);
+
+    padding: clamp(14px, 4vw, 18px) 4px;
+}
+
+.cuidado + .cuidado,
+.passoCacto + .passoCacto {
+    border-top: 1px solid var(--linha);
+}
+
+.cuidado > span,
+.passoCacto > span {
+    flex-shrink: 0;
+
+    width: clamp(32px, 8.5vw, 38px);
+    text-align: center;
+
+    font-size: clamp(24px, 6.5vw, 30px);
+    line-height: 1;
+}
+
+.cuidado p,
+.passoCacto p {
+    margin-top: 2px;
+}
+
+
+/* --- texto dos itens (vale para as duas formas e para os
+       cartões brancos dentro de painéis) --- */
+
+:is(.plantaLuz, .caracteristicaCacto, .sinal, .cuidado, .passoCacto,
+    .necessidadeCacto, .tipoCacto, .plantaNecessidade) h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: var(--item-titulo);
+    font-weight: 600;
+    color: var(--tinta);
+}
+
+:is(.plantaLuz, .caracteristicaCacto, .sinal, .cuidado, .passoCacto,
+    .necessidadeCacto, .tipoCacto, .plantaNecessidade) p {
+    font-size: var(--item-texto);
+    line-height: 1.4;
+    color: var(--texto-suave);
+}
+
+/* =========================
+   6. CARD SELECIONÁVEL (cadastro)
+   Planta, mascote e tipo de irrigação.
+   Selecionado = contorno menta + selinho ✓.
+========================= */
+
+.cardPlanta,
+.cardMascote,
+.cardIrrigacao {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    font-family: inherit;
+    text-align: center;
+    color: inherit;
+
+    background-color: var(--card);
+    border: 2px solid transparent;
+    box-shadow: var(--sombra);
+    cursor: pointer;
+
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+.cardPlanta:hover,
+.cardMascote:hover,
+.cardIrrigacao:hover {
+    transform: translateY(-2px);
+}
+
+.cardPlanta:active,
+.cardMascote:active,
+.cardIrrigacao:active {
+    transform: translateY(0);
+}
+
+.cardPlanta:focus-visible,
+.cardMascote:focus-visible,
+.cardIrrigacao:focus-visible {
+    outline: 3px solid var(--menta-forte);
+    outline-offset: 3px;
+}
+
+.cardPlanta.selecionado,
+.cardMascote.selecionado,
+.cardIrrigacao.selecionado {
+    border-color: var(--menta-forte);
+    background-color: var(--fundo-acerto);
+    box-shadow: 0 0 0 4px rgba(159, 216, 192, 0.25), var(--sombra);
+}
+
+.cardPlanta.selecionado::after,
+.cardMascote.selecionado::after,
+.cardIrrigacao.selecionado::after {
+    content: "✓";
+
+    display: grid;
+    place-items: center;
+
+    width: 22px;
+    height: 22px;
+    margin-top: 2px;
+
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+
+    background-color: var(--menta-forte);
+    border-radius: 50%;
+}
+
+
+/* =========================
+   7. MASCOTE (imagem)
+   Usado na Início e na página do mascote.
+========================= */
+
+.mascote-img {
+    grid-column: 1;
+    grid-row: 1;
+
+    width: min(58vw, 32dvh, 280px);
+    height: auto;
+    object-fit: contain;
+
+    animation: flutuar 4.5s ease-in-out infinite;
+}
+
+@keyframes flutuar {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+}
+
+
+/* =========================
+   TABLET E TELAS GRANDES
+========================= */
+
+@media (min-width: 700px) {
+
+    /* Botão grande */
+    #btnRegar,
+    .btnPersonalizar,
+    .btnComecar {
+        --btn-altura: 88px;
+        --btn-raio: 30px;
+        --btn-fonte: 26px;
+        --btn-lado: 92px;
+    }
+
+    #btnRegar {
+        --btn-altura: 92px;
+        --btn-raio: 32px;
+        --btn-fonte: 29px;
+    }
+
+    #btnRegar::before,
+    .btnPersonalizar::before {
+        left: 22px;
+
+        width: 56px;
+        height: 56px;
+
+        background-size: 28px;
+    }
+
+    /* Botão em pílula */
+    .btnQuiz,
+    .btnProxima,
+    .btnContinuar {
+        min-height: 68px;
+        max-width: 320px;
+        margin-inline: auto;
+
+        font-size: 24px;
+    }
+
+    /* Opção em linha */
+    .opcaoUmidade,
+    .opcaoCuidado,
+    .opcaoQuiz {
+        padding: 16px 20px;
+        font-size: 18px;
+        border-radius: 20px;
+    }
+
+    /* Acordeão */
+    .detalheCacto summary,
+    .respostaDesafioCacto summary {
+        padding: 16px 20px;
+        font-size: 22px;
+    }
+
+    /* Listas */
+    .comparacaoLuz,
+    .caracteristicasCacto,
+    .sinais {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .plantaLuz,
+    .caracteristicaCacto,
+    .sinal {
+        padding: 22px 16px;
+    }
+
+    .plantaLuz + .plantaLuz,
+    .caracteristicaCacto + .caracteristicaCacto,
+    .sinal + .sinal {
+        border-top: none;
+        border-left: 1px solid var(--linha);
+    }
+
+    .iconePlantaLuz,
+    .iconeCaracteristica,
+    .sinal > span {
+        font-size: 38px;
+    }
+
+    .listaCuidados,
+    .passosCacto {
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 28px;
+    }
+
+    .cuidado + .cuidado,
+    .passoCacto + .passoCacto {
+        border-top: none;
+    }
+
+    .cuidado:nth-child(n+3),
+    .passoCacto:nth-child(n+3) {
+        border-top: 1px solid var(--linha);
+    }
+
+    /* Mascote */
+    .mascote-img {
+        width: min(40dvh, 380px);
+    }
+}
+
+
+/* >>>>>>>>>> paginas/home.css <<<<<<<<<< */
+
+/* ==========================================================
+   PÁGINA INÍCIO
+   A imagem do mascote (.mascote-img) está em componentes.css,
+   porque a página do mascote usa a mesma.
+========================================================== */
+
+
+/* =========================
+   MASCOTE
+========================= */
+
+.mascote {
+    position: relative;
+    isolation: isolate;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+
+    padding-top: clamp(12px, 4vh, 32px);
+}
+
+/* Blur atrás do mascote */
+.mascote::before {
+    content: "";
+
+    position: absolute;
+    z-index: -1;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: min(64vw, 270px);
+    aspect-ratio: 1;
+
+    background: radial-gradient(
+        circle,
+        #f7f4f6 0%,
+        #6ae3f9 45%,
+        transparent 70%
+    );
+
+    border-radius: 50%;
+
+    filter: blur(40px);
+    opacity: 0.9;
+}
+
+#mascoteMensagem {
+    position: relative;
+
+    margin-top: clamp(14px, 3vh, 22px);
+    padding: 10px 22px;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(16px, 4.6vw, 20px);
+    font-weight: 600;
+    color: var(--tinta);
+
+    background-color: var(--card);
+    border-radius: 999px;
+    box-shadow: var(--sombra);
+}
+
+#mascoteMensagem::before {
+    content: "";
+
+    position: absolute;
+    top: -6px;
+    left: 50%;
+
+    width: 14px;
+    height: 14px;
+
+    background-color: var(--card);
+    transform: translateX(-50%) rotate(45deg);
+    border-radius: 3px;
+}
+
+
+/* =========================
+   INFORMAÇÕES
+========================= */
+
+.informacoesHome {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(10px, 3vw, 16px);
+
+    margin-top: clamp(24px, 5vh, 40px);
+}
+
+.info,
+.infoReservatorio {
+    background-color: var(--card);
+    border-radius: 24px;
+    padding: clamp(14px, 4vw, 20px);
+    box-shadow: var(--sombra);
+}
+
+.info::before,
+.infoReservatorio::before {
+    display: grid;
+    place-items: center;
+
+    width: 40px;
+    height: 40px;
+
+    font-size: 20px;
+    border-radius: 14px;
+}
+
+.info:nth-child(1)::before { content: "💧"; background-color: var(--agua); }
+.info:nth-child(2)::before { content: "🚿"; background-color: var(--pessego); }
+.infoReservatorio::before  { content: "🪣"; background-color: var(--menta); }
+
+.info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+
+    min-height: clamp(116px, 30vw, 140px);
+}
+
+.info::before {
+    margin-bottom: 10px;
+}
+
+.info h2,
+.infoReservatorio h2 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(14px, 3.6vw, 15px);
+    font-weight: 500;
+    color: var(--texto-suave);
+}
+
+.info p {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(18px, 5vw, 22px);
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--texto);
+}
+
+
+/* =========================
+   RESERVATÓRIO
+========================= */
+
+.infoReservatorio {
+    grid-column: 1 / -1;
+
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    align-items: center;
+    column-gap: 12px;
+    row-gap: 14px;
+}
+
+.infoReservatorio::before { grid-column: 1; grid-row: 1; }
+.infoReservatorio h2      { grid-column: 2; grid-row: 1; }
+
+#porcentagemReservatorio {
+    grid-column: 3;
+    grid-row: 1;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(22px, 6vw, 28px);
+    font-weight: 700;
+    color: var(--tinta);
+}
+
+.barraReservatorio {
+    grid-column: 1 / -1;
+    grid-row: 2;
+
+    height: clamp(12px, 3.4vw, 16px);
+
+    background-color: var(--trilho);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+#nivelReservatorio {
+    width: 98%;
+    height: 100%;
+
+    background: linear-gradient(90deg, var(--menta-forte), #7FC8E8);
+    border-radius: 999px;
+
+    transition: width 0.4s ease;
+}
+
+
+/* =========================
+   TELAS MUITO PEQUENAS E TELAS BAIXAS
+========================= */
+
+@media (max-width: 340px) {
+    .informacoesHome {
+        gap: 8px;
+    }
+
+    .info,
+    .infoReservatorio {
+        padding: 12px;
+        border-radius: 20px;
+    }
+}
+
+@media (max-height: 640px) {
+    .informacoesHome {
+        margin-top: 20px;
+    }
+}
+
+
+/* =========================
+   TABLET E TELAS GRANDES
+========================= */
+
+@media (min-width: 700px) {
+
+    .mascote::before {
+        width: min(60vw, 360px);
+    }
+
+    #mascoteMensagem {
+        margin-top: 28px;
+        padding: 14px 32px;
+        font-size: 24px;
+    }
+
+    .informacoesHome {
+        gap: 22px;
+        margin-top: clamp(36px, 6vh, 64px);
+    }
+
+    .info,
+    .infoReservatorio {
+        padding: 28px;
+        border-radius: 32px;
+    }
+
+    .info {
+        min-height: 170px;
+    }
+
+    .info::before,
+    .infoReservatorio::before {
+        width: 56px;
+        height: 56px;
+        font-size: 28px;
+        border-radius: 18px;
+    }
+
+    .info h2,
+    .infoReservatorio h2 {
+        font-size: 21px;
+    }
+
+    .info p {
+        font-size: 28px;
+    }
+
+    .infoReservatorio {
+        grid-template-columns: 56px 1fr auto;
+        column-gap: 18px;
+        row-gap: 20px;
+    }
+
+    #porcentagemReservatorio {
+        font-size: 36px;
+    }
+
+    .barraReservatorio {
+        height: 20px;
+    }
+}
+
+
+/* >>>>>>>>>> paginas/cuidar.css <<<<<<<<<< */
+
+/* ==========================================================
+   PÁGINA CUIDAR
+========================================================== */
+
+
+/* =========================
+   RITMO E ESPAÇAMENTO
+   (--espaco-secao vem do main, em base.css)
+========================= */
+
+.tipo_planta {
+    margin-top: clamp(20px, 5vh, 32px);
+}
+
+.estado_planta,
+.irrigacao,
+.historico {
+    margin-top: var(--espaco-secao);
+}
+
+/* mais respiro ao redor do botão (a ação principal) */
+.irrigacao {
+    margin-top: calc(var(--espaco-secao) + 8px);
+}
+
+.historico {
+    margin-top: calc(var(--espaco-secao) + 16px);
+}
+
+
+/* =========================
+   TIPO DA PLANTA
+========================= */
+
+.tipo_planta {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    align-items: center;
+    column-gap: 16px;
+    row-gap: 6px;
+
+    padding: clamp(20px, 5.5vw, 26px);
+
+    background: linear-gradient(135deg, var(--menta), var(--agua));
+    border-radius: 28px;
+}
+
+.tipo_planta::before {
+    content: "🪴";
+
+    grid-column: 1;
+    grid-row: 1 / span 2;
+
+    display: grid;
+    place-items: center;
+
+    width: 56px;
+    height: 56px;
+
+    font-size: 30px;
+
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: 18px;
+}
+
+.tipo_planta p:nth-child(1) {
+    grid-column: 2;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(13px, 3.6vw, 15px);
+    font-weight: 500;
+    color: var(--tinta);
+}
+
+#tipo_planta {
+    grid-column: 2;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(22px, 6.4vw, 28px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--texto);
+}
+
+#dica {
+    grid-column: 1 / -1;
+
+    margin-top: 16px;
+    padding: 12px 16px;
+
+    font-size: clamp(14px, 4vw, 16px);
+    font-weight: 600;
+    line-height: 1.4;
+
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 16px;
+}
+
+#dica::before {
+    content: "💡 ";
+}
+
+
+/* =========================
+   RESERVATÓRIO E UMIDADE
+========================= */
+
+.estado_planta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: clamp(14px, 4vw, 20px);
+}
+
+.infoReservatorioCuidar,
+.infoUmidade {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    column-gap: 12px;
+    row-gap: 14px;
+
+    padding: clamp(18px, 5vw, 22px);
+
+    background-color: rgba(255, 255, 255, 0.65);
+    border: 1px solid var(--linha-suave);
+    border-radius: 22px;
+}
+
+.infoReservatorioCuidar h2,
+.infoUmidade h2 {
+    grid-column: 1;
+    grid-row: 1;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(16px, 4vw, 18px);
+    font-weight: 500;
+    color: var(--texto-suave);
+}
+
+#porcentagemReservatorioCuidar,
+#porcentagemUmidade {
+    grid-column: 2;
+    grid-row: 1;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(18px, 5vw, 20px);
+    font-weight: 600;
+    color: var(--texto);
+}
+
+.barraReservatorioCuidar,
+.barraUmidade {
+    grid-column: 1 / -1;
+    grid-row: 2;
+
+    height: 8px;
+
+    background-color: var(--trilho);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+#nivelReservatorioCuidar,
+#nivelUmidade {
+    height: 100%;
+    background: var(--menta-forte);
+    border-radius: 999px;
+    transition: width 0.4s ease;
+}
+
+#nivelReservatorioCuidar { width: 98%; }
+#nivelUmidade            { width: 68%; }
+
+/* Alertas */
+#alertaReservatorioCuidar,
+#alerta_umidade {
+    grid-column: 1 / -1;
+    grid-row: 3;
+
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--texto-suave);
+}
+
+/* No JS, adicione a classe "atencao" quando o nível estiver ruim.
+   Ex.: alerta_umidade.classList.add('atencao') */
+#alertaReservatorioCuidar.atencao,
+#alerta_umidade.atencao {
+    color: #B4611B;
+    font-weight: 700;
+}
+
+
+/* =========================
+   IRRIGAÇÃO
+   O botão em si (cor, tamanho, estados) está em componentes.css.
+========================= */
+
+.regar {
+    position: relative;
+    isolation: isolate;
+}
+
+.regar::before {
+    content: "";
+
+    position: absolute;
+    z-index: -1;
+
+    inset: -14px -6px;
+
+    background: radial-gradient(
+        ellipse at center,
+        #8BDCF7 0%,
+        #9BE8C6 45%,
+        transparent 75%
+    );
+
+    filter: blur(106px);
+    opacity: 0.6;
+}
+
+#btnRegar {
+    animation: respirar 3s ease-in-out infinite;
+}
+
+#btnRegar::before {
+    /* gota */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230F4A55' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z'/%3E%3C/svg%3E");
+}
+
+@keyframes respirar {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.02); }
+}
+
+#btnRegar:hover,
+#btnRegar:active,
+#btnRegar:disabled {
+    animation: none;
+}
+
+/* Status da irrigação automática */
+.statusIrrigacao {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    margin-top: clamp(28px, 7vw, 36px);
+    padding: 0 6px;
+}
+
+.statusIrrigacao p:first-child {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(14px, 3.8vw, 15px);
+    font-weight: 500;
+    color: var(--texto-suave);
+}
+
+#irrigacaoAutomatica {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 6px 14px;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(14px, 3.8vw, 15px);
+    font-weight: 600;
+    color: var(--tinta);
+
+    background-color: var(--menta);
+    border-radius: 999px;
+}
+
+#irrigacaoAutomatica::before {
+    content: "";
+
+    width: 8px;
+    height: 8px;
+
+    background-color: #4CAF7A;
+    border-radius: 50%;
+}
+
+#irrigacaoAutomatica.desativada::before {
+    background-color: #E57373;
+}
+
+
+/* =========================
+   HISTÓRICO
+========================= */
+
+.historico h2 {
+    margin-bottom: 16px;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(18px, 5vw, 22px);
+    font-weight: 600;
+    color: var(--tinta);
+}
+
+#listaHistorico {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Cada rega que o JS adicionar */
+#listaHistorico > * {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    padding: 16px 18px;
+
+    font-size: clamp(14px, 3.8vw, 16px);
+    font-weight: 600;
+
+    background-color: var(--card);
+    border-radius: 18px;
+    box-shadow: var(--sombra);
+}
+
+/* Estado vazio */
+#listaHistorico:empty::before {
+    content: "Nenhuma rega ainda. Toque em Regar agora para começar!";
+
+    padding: 24px 20px;
+
+    font-size: clamp(14px, 3.8vw, 16px);
+    font-weight: 600;
+    text-align: center;
+    color: var(--texto-suave);
+
+    background-color: rgba(255, 255, 255, 0.6);
+    border: 2px dashed #E4DBCF;
+    border-radius: 20px;
+}
+
+
+/* =========================
+   TABLET E TELAS GRANDES
+========================= */
+
+@media (min-width: 700px) {
+
+    .tipo_planta {
+        grid-template-columns: 72px 1fr;
+        column-gap: 22px;
+        padding: 32px;
+        border-radius: 36px;
+    }
+
+    .tipo_planta::before {
+        width: 72px;
+        height: 72px;
+        font-size: 38px;
+        border-radius: 22px;
+    }
+
+    .tipo_planta p:nth-child(1) { font-size: 20px; }
+    #tipo_planta                { font-size: 34px; }
+    #dica                       { font-size: 20px; padding: 16px 20px; margin-top: 20px; }
+
+    .estado_planta {
+        gap: 24px;
+    }
+
+    .infoReservatorioCuidar,
+    .infoUmidade {
+        padding: 28px;
+        row-gap: 18px;
+        border-radius: 28px;
+    }
+
+    .infoReservatorioCuidar h2,
+    .infoUmidade h2 { font-size: 20px; }
+
+    #porcentagemReservatorioCuidar,
+    #porcentagemUmidade { font-size: 24px; }
+
+    .barraReservatorioCuidar,
+    .barraUmidade { height: 10px; }
+
+    #alertaReservatorioCuidar,
+    #alerta_umidade { font-size: 18px; }
+
+    .statusIrrigacao {
+        margin-top: 40px;
+    }
+
+    .statusIrrigacao p:first-child,
+    #irrigacaoAutomatica { font-size: 20px; }
+
+    .historico h2 { font-size: 26px; margin-bottom: 20px; }
+
+    #listaHistorico { gap: 14px; }
+
+    #listaHistorico > * {
+        padding: 20px 24px;
+        font-size: 18px;
+        border-radius: 22px;
+    }
+}
+
+
+/* >>>>>>>>>> paginas/mascote.css <<<<<<<<<< */
+
+/* ==========================================================
+   PÁGINA MASCOTE
+   A imagem (.mascote-img) e o botão (.btnPersonalizar) têm
+   as regras principais em componentes.css.
+========================================================== */
+
+
+/* =========================
+   ÁREA DO MASCOTE
+========================= */
+
+.areaMascote {
+    position: relative;
+    isolation: isolate;
+
+    display: grid;
+    justify-items: center;
+
+    text-align: center;
+
+    padding-top: clamp(12px, 4vh, 32px);   /* igual à Início */
+}
+
+/* Halo */
+.areaMascote::before {
+    content: "";
+
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    justify-self: center;
+
+    z-index: -1;
+
+    width: min(60vw, 250px);
+    aspect-ratio: 1;
+
+    background: radial-gradient(
+        circle,
+        #f7f4f6 0%,
+        #6ae3f9 45%,
+        transparent 70%
+    );
+
+    border-radius: 50%;
+
+    filter: blur(36px);
+    opacity: 0.85;
+}
+
+
+/* =========================
+   PONTOS
+========================= */
+
+#pontos {
+    position: absolute;
+    top: clamp(18px, 5vw, 26px);
+    right: clamp(4px, 2vw, 10px);
+
+    display: inline-flex;
+    align-items: baseline;
+    gap: 5px;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(15px, 4vw, 17px);
+    color: var(--tinta);
+}
+
+#quantidadePontos {
+    font-size: clamp(20px, 5.6vw, 24px);
+    font-weight: 700;
+}
+
+
+/* =========================
+   BOTÃO PERSONALIZAR
+========================= */
+
+.btnPersonalizar {
+    margin-top: clamp(28px, 7vw, 40px);
+}
+
+.btnPersonalizar::before {
+    /* paleta de cores */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230F4A55' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='13.5' cy='6.5' r='.5'/%3E%3Ccircle cx='17.5' cy='10.5' r='.5'/%3E%3Ccircle cx='8.5' cy='7.5' r='.5'/%3E%3Ccircle cx='6.5' cy='12.5' r='.5'/%3E%3Cpath d='M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z'/%3E%3C/svg%3E");
+}
+
+
+/* =========================
+   "COMO GANHAR PONTOS?"
+========================= */
+
+.btnPontos {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    width: 100%;
+    margin-top: clamp(30px, 7vw, 40px);
+
+    background: none;
+    border: none;
+    padding: 0;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(17px, 4.2vw, 18px);
+    font-weight: 600;
+    color: var(--tinta);
+    text-align: left;
+
+    cursor: default;
+}
+
+.listaPontos {
+    margin-top: clamp(12px, 3vw, 16px);
+
+    background-color: var(--card);
+    border-radius: 22px;
+    box-shadow: var(--sombra);
+    overflow: hidden;
+}
+
+.itemPontos {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    padding: clamp(14px, 4vw, 18px) clamp(16px, 4.5vw, 20px);
+}
+
+.itemPontos + .itemPontos {
+    border-top: 1px solid var(--linha-suave);
+}
+
+.iconePontos {
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    width: 44px;
+    height: 44px;
+
+    font-size: 20px;
+
+    border-radius: 14px;
+}
+
+.itemPontos:nth-child(1) .iconePontos { background-color: #EDE1FF; }
+.itemPontos:nth-child(2) .iconePontos { background-color: var(--menta); }
+.itemPontos:nth-child(3) .iconePontos { background-color: var(--agua); }
+
+.textoPontos {
+    flex: 1;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.textoPontos strong {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--texto);
+}
+
+.textoPontos p {
+    font-size: clamp(14px, 3.6vw, 16px);
+    line-height: 1.35;
+    color: var(--texto-suave);
+}
+
+.valorPontos {
+    flex-shrink: 0;
+
+    padding: 5px 11px;
+
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: clamp(12px, 3.4vw, 13px);
+    color: var(--tinta);
+
+    background-color: var(--menta);
+    border-radius: 999px;
+}
+
+
+/* =========================
+   TABLET E TELAS GRANDES
+========================= */
+
+@media (min-width: 700px) {
+
+    .areaMascote::before {
+        width: min(56vw, 340px);
+    }
+
+    #pontos {
+        font-size: 18px;
+    }
+
+    #quantidadePontos {
+        font-size: 26px;
+    }
+
+    .btnPontos {
+        font-size: 24px;
+    }
+
+    .listaPontos {
+        border-radius: 26px;
+    }
+
+    .itemPontos {
+        padding: 22px 26px;
+        gap: 18px;
+    }
+
+    .iconePontos {
+        width: 52px;
+        height: 52px;
+        font-size: 24px;
+        border-radius: 16px;
+    }
+
+    .textoPontos strong { font-size: 22px; }
+    .textoPontos p      { font-size: 20px; }
+
+    .valorPontos {
+        padding: 6px 14px;
+        font-size: 16px;
+    }
+}
+
+
+/* >>>>>>>>>> paginas/cadastro.css <<<<<<<<<< */
+
+/* ==========================================================
+   PÁGINA CADASTRO
+   O comportamento de "card selecionável" (contorno menta + ✓)
+   está em componentes.css. Aqui ficam só tamanhos e cores
+   de cada tipo de card.
+========================================================== */
+
+
+/* =========================
+   ESTRUTURA
+========================= */
+
+main.cadastro {
+    padding-top: max(clamp(20px, 5vh, 36px), env(safe-area-inset-top, 0px));
+    padding-bottom: clamp(32px, 8vh, 56px);
+}
+
+main.cadastro > * + * {
+    margin-top: var(--espaco-secao);
+}
+
+.campoCadastro + .campoCadastro {
+    margin-top: clamp(14px, 4vw, 18px);
+}
+
+
+/* =========================
+   CABEÇALHO DE BOAS-VINDAS
+========================= */
+
+.cabecalhoCadastro {
+    text-align: center;
+}
+
+.cabecalhoCadastro .titulo {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(24px, 7vw, 32px);
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--tinta);
+}
+
+.cabecalhoCadastro p {
+    margin-top: 10px;
+
+    font-size: clamp(14px, 4.5vw, 18px);
+    line-height: 1.5;
+    color: var(--texto-suave);
+}
+
+
+/* =========================
+   CAMPOS DE TEXTO
+========================= */
+
+.campoCadastro {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.campoCadastro label {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(16px, 4.5vw, 18px);
+    font-weight: 600;
+    color: var(--tinta);
+}
+
+.campoCadastro input {
+    width: 100%;
+
+    padding: 14px 18px;
+
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(15px, 4vw, 16px);
+    color: var(--texto);
+
+    background-color: var(--card);
+    border: 2px solid #CBE3D6;
+    border-radius: 18px;
+
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.campoCadastro input::placeholder {
+    color: #B7AFA2;
+}
+
+.campoCadastro input:focus {
+    outline: none;
+
+    border-color: var(--menta-forte);
+    box-shadow: 0 0 0 4px rgba(159, 216, 192, 0.28);
+}
+
+
+/* =========================
+   TÍTULOS DE SEÇÃO
+========================= */
+
+.escolhaPlanta h2,
+.escolhaMascote h2 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(18px, 5.2vw, 22px);
+    font-weight: 600;
+    color: var(--texto);
+}
+
+.escolhaIrrigacao h2 {
+    padding-top: 10px;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(18px, 5.2vw, 22px);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--texto);
+}
+
+.textoAuxiliar {
+    margin-top: 4px;
+
+    font-size: clamp(14px, 3.8vw, 15px);
+    color: var(--texto-suave);
+}
+
+
+/* =========================
+   GRUPOS DE PLANTAS (grade de 8 cards)
+========================= */
+
+.gruposPlantas {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(10px, 3vw, 14px);
+
+    margin-top: clamp(16px, 4vw, 20px);
+}
+
+.cardPlanta {
+    gap: 6px;
+    padding: clamp(14px, 4vw, 18px) clamp(10px, 3vw, 14px);
+    border-radius: 22px;
+}
+
+.imagemPlanta {
+    display: grid;
+    place-items: center;
+
+    width: clamp(56px, 16vw, 72px);
+    aspect-ratio: 1;
+
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.imagemPlanta img {
+    width: 95%;
+    height: 95%;
+    object-fit: contain;
+}
+
+.cardPlanta:nth-child(1) .imagemPlanta { background-color: var(--pessego); }  /* Cactos */
+.cardPlanta:nth-child(2) .imagemPlanta { background-color: var(--menta); }    /* Suculentas */
+.cardPlanta:nth-child(3) .imagemPlanta { background-color: var(--agua); }     /* Tropicais */
+.cardPlanta:nth-child(4) .imagemPlanta { background-color: var(--rosa); }     /* Floridas */
+.cardPlanta:nth-child(5) .imagemPlanta { background-color: #DFF6C8; }         /* Samambaias */
+.cardPlanta:nth-child(6) .imagemPlanta { background-color: #EDE1FF; }         /* Orquídeas */
+.cardPlanta:nth-child(7) .imagemPlanta { background-color: #FFE9B8; }         /* Temperos */
+.cardPlanta:nth-child(8) .imagemPlanta { background-color: #FFD3D3; }         /* Frutíferas */
+
+.cardPlanta h3 {
+    margin-top: 4px;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(14px, 4vw, 16px);
+    font-weight: 600;
+    color: var(--texto);
+}
+
+.cardPlanta .exemplos {
+    font-size: clamp(12px, 3.6vw, 14px);
+    line-height: 1.35;
+    color: var(--texto-suave);
+}
+
+.cardPlanta .descricao {
+    display: none;
+}
+
+
+/* =========================
+   ESCOLHA DO MASCOTE (2 cards grandes)
+========================= */
+
+.opcoesMascote {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(12px, 4vw, 18px);
+
+    margin-top: clamp(16px, 4vw, 20px);
+}
+
+.cardMascote {
+    gap: 8px;
+    padding: clamp(18px, 5vw, 24px) clamp(10px, 3vw, 14px);
+    border-radius: 26px;
+}
+
+.imagemMascote {
+    display: grid;
+    place-items: center;
+
+    width: clamp(96px, 28vw, 130px);
+    aspect-ratio: 1;
+
+    border-radius: 50%;
+}
+
+.imagemMascote img {
+    width: 88%;
+    height: 88%;
+    object-fit: contain;
+}
+
+.cardMascote:nth-child(1) .imagemMascote {
+    background: radial-gradient(circle, var(--menta) 0%, var(--agua) 70%, transparent 100%);
+}
+
+.cardMascote:nth-child(2) .imagemMascote {
+    background: radial-gradient(circle, var(--rosa) 0%, var(--pessego) 70%, transparent 100%);
+}
+
+.cardMascote h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(15px, 4.4vw, 17px);
+    font-weight: 600;
+    color: var(--texto);
+}
+
+/* o selinho ✓ é um pouco maior nos cards grandes */
+.cardMascote.selecionado::after {
+    width: 24px;
+    height: 24px;
+    margin-top: 0;
+    font-size: 14px;
+}
+
+
+/* =========================
+   ESCOLHA DA IRRIGAÇÃO (2 cards)
+========================= */
+
+.opcoesIrrigacao {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(12px, 4vw, 18px);
+
+    margin-top: clamp(16px, 4vw, 20px);
+}
+
+.cardIrrigacao {
+    gap: 10px;
+    padding: clamp(20px, 5.5vw, 26px) clamp(12px, 3.5vw, 16px);
+    border-radius: 26px;
+}
+
+.cardIrrigacao::before {
+    display: grid;
+    place-items: center;
+
+    width: clamp(64px, 18vw, 80px);
+    aspect-ratio: 1;
+
+    font-size: clamp(24px, 7vw, 32px);
+
+    border-radius: 50%;
+}
+
+.cardIrrigacao h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(15px, 4.2vw, 17px);
+    font-weight: 600;
+    color: var(--texto);
+}
+
+.cardIrrigacao p {
+    font-size: clamp(14px, 3.8vw, 14.5px);
+    line-height: 1.4;
+    color: var(--texto-suave);
+}
+
+
+/* =========================
+   BOTÃO FINAL
+   (.btnComecar: estilo em componentes.css)
+========================= */
+
+
+/* =========================
+   TABLET E TELAS GRANDES
+========================= */
+
+@media (min-width: 700px) {
+
+    .cabecalhoCadastro .titulo { font-size: 39px; }
+    .cabecalhoCadastro p       { font-size: 19px; }
+
+    .campoCadastro label { font-size: 19px; }
+
+    .campoCadastro input {
+        padding: 16px 22px;
+        font-size: 19px;
+        border-radius: 20px;
+    }
+
+    .escolhaPlanta h2,
+    .escolhaMascote h2,
+    .escolhaIrrigacao h2 { font-size: 28px; }
+
+    .textoAuxiliar { font-size: 19px; }
+
+    .gruposPlantas {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+    }
+
+    .cardPlanta {
+        padding: 22px 16px;
+        border-radius: 26px;
+    }
+
+    .imagemPlanta { width: 80px; border-radius: 20px; }
+
+    .cardPlanta h3        { font-size: 18px; }
+    .cardPlanta .exemplos { font-size: 14px; }
+
+    .cardPlanta .descricao {
+        display: block;
+        margin-top: 2px;
+
+        font-size: 14px;
+        line-height: 1.4;
+        color: var(--texto-suave);
+    }
+
+    .opcoesMascote { gap: 22px; }
+
+    .cardMascote {
+        padding: 30px 20px;
+        border-radius: 32px;
+    }
+
+    .imagemMascote { width: 150px; }
+
+    .cardMascote h3 { font-size: 19px; }
+
+    .opcoesIrrigacao {
+        gap: 22px;
+    }
+
+    .cardIrrigacao {
+        padding: 30px 20px;
+        border-radius: 32px;
+    }
+
+    .cardIrrigacao::before {
+        width: 96px;
+        font-size: 38px;
+    }
+
+    .cardIrrigacao h3 { font-size: 22px; }
+    .cardIrrigacao p  { font-size: 18px; }
+}
+
+
+/* >>>>>>>>>> paginas/aprender.css <<<<<<<<<< */
+
+/* ==========================================================
+   PÁGINA APRENDER (lista de lições)
+========================================================== */
+
+
+/* =========================
+   CABEÇALHO DA PÁGINA
+========================= */
+
+.cabecalhoAprender {
+    padding-top: clamp(16px, 4vh, 28px);
+}
+
+.cabecalhoAprender h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(22px, 6.4vw, 28px);
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--texto);
+}
+
+.cabecalhoAprender .iconeAprenderTitulo {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+
+    width: clamp(38px, 10vw, 46px);
+    aspect-ratio: 1;
+
+    font-size: clamp(18px, 5vw, 22px);
+
+    background-color: var(--agua);
+    border-radius: 14px;
+}
+
+.cabecalhoAprender p {
+    margin-top: 8px;
+
+    font-size: clamp(14px, 4.5vw, 16px);
+    line-height: 1.5;
+    color: var(--texto-suave);
+}
+
+
+/* =========================
+   BLOCOS DE LIÇÕES
+========================= */
+
+.blocoAprender {
+    margin-top: clamp(32px, 8vw, 48px);
+
+    --acento: var(--menta);   /* cor padrão, trocada por bloco abaixo */
+}
+
+.blocoAprender:nth-of-type(2) { --acento: var(--agua); }
+.blocoAprender:nth-of-type(3) { --acento: var(--pessego); }
+.blocoAprender:nth-of-type(4) { --acento: #EDE1FF; }
+
+.tituloBloco {
+    margin-bottom: clamp(14px, 4vw, 18px);
+}
+
+.tituloBloco h2 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(20px, 5.2vw, 23px);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--texto);
+}
+
+.tituloBloco p {
+    margin-top: 4px;
+
+    font-size: clamp(14px, 4.5vw, 16px);
+    line-height: 1.4;
+    color: var(--texto-suave);
+}
+
+
+/* =========================
+   LISTA DE LIÇÕES
+========================= */
+
+.listaLicoes {
+    background-color: var(--card);
+    border-radius: 22px;
+    box-shadow: var(--sombra);
+    overflow: hidden;
+}
+
+.cardLicao {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    width: 100%;
+    padding: clamp(14px, 4vw, 18px) clamp(16px, 4.5vw, 20px);
+
+    font-family: inherit;
+    text-align: left;
+    text-decoration: none;
+    color: inherit;
+
+    position: relative;
+    z-index: 0;
+
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+
+    transition: background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+.cardLicao + .cardLicao {
+    border-top: 1px solid var(--linha-suave);
+}
+
+.cardLicao:hover {
+    z-index: 1;
+
+    background-color: #F3FAF6;
+    box-shadow: 0 6px 14px rgba(30, 59, 62, 0.08);
+    transform: translateY(-1px) scale(1.01);
+}
+
+.cardLicao:active {
+    background-color: #E6F3EC;
+    box-shadow: none;
+    transform: translateY(0) scale(0.99);
+}
+
+.cardLicao:focus-visible {
+    outline: 3px solid var(--menta-forte);
+    outline-offset: -3px;
+}
+
+/* Número da lição (etiqueta torta) */
+.numeroLicao {
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    width: 38px;
+    height: 38px;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(14px, 3.8vw, 15px);
+    font-weight: 700;
+    color: var(--tinta);
+
+    background-color: var(--acento);
+    border-radius: 50%;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.07);
+
+    transition: transform 0.2s ease;
+}
+
+.cardLicao:nth-child(odd) .numeroLicao  { transform: rotate(-6deg); }
+.cardLicao:nth-child(even) .numeroLicao { transform: rotate(6deg); }
+
+.cardLicao:hover .numeroLicao {
+    transform: rotate(0deg) scale(1.06);
+}
+
+/* Texto (título + descrição da lição) */
+.cardLicao > div {
+    flex: 1;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.cardLicao h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--texto);
+}
+
+.cardLicao p {
+    font-size: clamp(13px, 4vw, 14.5px);
+    line-height: 1.35;
+    color: var(--texto-suave);
+}
+
+/* Setinha de navegação */
+.setaLicao {
+    flex-shrink: 0;
+
+    font-size: 22px;
+    line-height: 1;
+    color: #C9BEA9;
+
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.cardLicao:hover .setaLicao {
+    transform: translateX(3px);
+    color: var(--tinta);
+}
+
+
+/* =========================
+   TABLET E TELAS GRANDES
+========================= */
+
+@media (min-width: 700px) {
+
+    .cabecalhoAprender h2 { font-size: 34px; }
+    .cabecalhoAprender p  { font-size: 22px; }
+
+    .blocoAprender {
+        margin-top: 56px;
+    }
+
+    .tituloBloco h2 { font-size: 28px; }
+    .tituloBloco p  { font-size: 20px; }
+
+    .listaLicoes {
+        border-radius: 26px;
+    }
+
+    .cardLicao {
+        gap: 18px;
+        padding: 22px 26px;
+    }
+
+    .numeroLicao {
+        width: 44px;
+        height: 44px;
+        font-size: 16px;
+    }
+
+    .cardLicao h3 { font-size: 22px; }
+    .cardLicao p  { font-size: 20px; }
+
+    .setaLicao { font-size: 26px; }
+}
+
+
+/* >>>>>>>>>> paginas/licoes.css <<<<<<<<<< */
+
+/* ==========================================================
+   LIÇÕES
+   Ordem deste arquivo:
+   1. Base de toda lição (título, ritmo, voltar, imagem)
+   2. Blocos que aparecem em quase toda lição
+      (curiosidade, conexão com o PlantAmigo, fechamento)
+   3. O que é exclusivo de cada lição (1 a 5)
+
+   Cards, painéis, opções, acordeão e listas já estão em
+   componentes.css. Uma lição nova só precisa de uma seção
+   aqui se tiver algo que ainda não existe.
+========================================================== */
+
+
+/* ==========================================================
+   1. BASE DE TODA LIÇÃO
+========================================================== */
+
+/* Botão voltar */
+.voltar {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(14px, 3.8vw, 15px);
+    font-weight: 600;
+    color: var(--tinta);
+    text-decoration: none;
+
+    transition: opacity 0.15s ease;
+}
+
+.voltar:hover  { opacity: 0.7; }
+.voltar:active { opacity: 0.5; }
+
+.voltar:focus-visible {
+    outline: 3px solid var(--menta-forte);
+    outline-offset: 4px;
+    border-radius: 8px;
+}
+
+/* Ritmo entre as seções */
+.licao {
+    padding-bottom: clamp(32px, 8vh, 56px);
+}
+
+.licao section:first-of-type {
+    margin-top: clamp(20px, 5vh, 32px);
+}
+
+.licao section + section {
+    margin-top: clamp(36px, 8vw, 52px);
+}
+
+.licao h2 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(23px, 5.9vw, 26px);
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--tinta);
+}
+
+.licao section > p {
+    margin-top: 6px;
+
+    font-size: clamp(15px, 4vw, 16.5px);
+    line-height: 1.55;
+    color: var(--texto-suave);
+}
+
+/* Abertura: sem card, só o convite */
+.introducaoLicao {
+    text-align: left;
+}
+
+.introducaoLicao > p {
+    max-width: 48ch;
+}
+
+/* Imagem da lição, com um fio fino em volta */
+.imagemLicao {
+    margin: clamp(16px, 4vw, 20px) 0 clamp(4px, 1.5vw, 8px);
+
+    border: 1px solid rgba(30, 59, 62, 0.14);
+    border-radius: 22px;
+    overflow: hidden;
+}
+
+.imagemLicao img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+
+/* ==========================================================
+   2. BLOCOS COMUNS
+========================================================== */
+
+/* --- "Você sabia?" — único lugar em âmbar --- */
+
+.conteudoCuriosidade {
+    position: relative;
+
+    padding: clamp(18px, 5vw, 22px) clamp(20px, 5.5vw, 24px);
+
+    background-color: #FFF6E4;
+    border-radius: 24px;
+    box-shadow: var(--sombra);
+
+    transform: rotate(-1deg);
+}
+
+.conteudoCuriosidade::before {
+    content: "";
+
+    position: absolute;
+    top: -8px;
+    left: clamp(20px, 6vw, 28px);
+
+    width: 0;
+    height: 0;
+
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-bottom: 9px solid #FFF6E4;
+}
+
+.conteudoCuriosidade h3 {
+    margin-bottom: 6px;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(18px, 4.4vw, 19px);
+    font-weight: 700;
+    color: #8A5A15;
+}
+
+.conteudoCuriosidade p {
+    font-size: clamp(15px, 4vw, 17px);
+    line-height: 1.5;
+    color: #6B4A1D;
+}
+
+
+/* --- "E o Meu PlantAmigo?" — único lugar em azul-água --- */
+
+.conexaoPlantAmigo {
+    background-color: var(--agua);
+    border-radius: 24px;
+    padding: clamp(18px, 5vw, 22px) clamp(20px, 5.5vw, 24px);
+}
+
+.conteudoConexao {
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(14px, 4vw, 18px);
+}
+
+.iconeConexao {
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    width: clamp(48px, 13vw, 56px);
+    aspect-ratio: 1;
+
+    font-size: clamp(22px, 6vw, 26px);
+
+    background-color: rgba(255, 255, 255, 0.55);
+    border-radius: 50%;
+}
+
+.conteudoConexao h3 {
+    margin-bottom: 4px;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(15.5px, 4.2vw, 17px);
+    font-weight: 700;
+    color: #1B6FA8;
+}
+
+.conteudoConexao p {
+    font-size: clamp(13px, 3.6vw, 15px);
+    line-height: 1.5;
+    color: #1B5A86;
+}
+
+
+/* --- Fechamento: aberto, foco no quiz --- */
+
+.finalLicao {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.finalLicao h3 {
+    margin-bottom: 8px;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(21px, 5.8vw, 25px);
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--tinta);
+}
+
+.finalLicao p {
+    margin-bottom: clamp(22px, 5.5vw, 28px);
+
+    max-width: 34ch;
+}
+
+
+/* ==========================================================
+   3. EXCLUSIVO DE CADA LIÇÃO
+========================================================== */
+
+
+/* ---------------------------------------------------------
+   LIÇÃO 1 — DESCOBRINDO AS PLANTAS
+--------------------------------------------------------- */
+
+/* Esta lição usa um painel um pouco mais acinzentado que as
+   outras. Para igualar às demais, apague estas duas linhas. */
+.necessidadesPlanta {
+    background-color: var(--painel);
+    --pad-modulo: clamp(23px, 5.5vw, 28px);
+}
+
+.plantaInterativa {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(8px, 2.5vw, 10px);
+
+    margin-top: clamp(14px, 3.5vw, 18px);
+}
+
+.partePlanta {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+
+    padding: 10px 18px;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(15px, 4vw, 18px);
+    font-weight: 600;
+    color: var(--texto);
+
+    background-color: var(--fundo-item);
+    border: 1.5px solid transparent;
+    border-radius: 999px;
+    cursor: pointer;
+
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Pontinho que some quando a parte é selecionada */
+.partePlanta::before {
+    content: "";
+    flex-shrink: 0;
+
+    width: 7px;
+    height: 7px;
+
+    background-color: var(--menta-forte);
+    border-radius: 50%;
+
+    transition: opacity 0.15s ease;
+}
+
+.partePlanta:hover {
+    border-color: rgba(159, 216, 192, 0.6);
+    transform: translateY(-1px);
+}
+
+.partePlanta:active {
+    transform: translateY(0) scale(0.97);
+}
+
+.partePlanta:focus-visible {
+    outline: 3px solid var(--menta-forte);
+    outline-offset: 3px;
+}
+
+/* Selecionada: ocupa a linha inteira e mostra a explicação */
+.partePlanta.selecionado {
+    flex-basis: 100%;
+    max-width: 100%;
+
+    justify-content: flex-start;
+    text-align: left;
+
+    padding: 14px 18px;
+
+    background-color: var(--menta-forte);
+    color: var(--verde-escuro);
+}
+
+.partePlanta.selecionado strong {
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.partePlanta.selecionado::before {
+    opacity: 0;
+}
+
+/* "O que uma planta precisa?" — grade 2x2 com fios */
+.necessidades {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    margin-top: clamp(16px, 4vw, 20px);
+
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.necessidade {
+    padding: clamp(14px, 4vw, 18px);
+
+    border-right: 1px solid var(--linha);
+    border-bottom: 1px solid var(--linha);
+}
+
+.necessidade:nth-child(2n)            { border-right: none; }
+.necessidade:nth-last-child(-n+2)     { border-bottom: none; }
+
+.necessidade h3 {
+    margin-bottom: 4px;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(15px, 3.8vw, 16px);
+    font-weight: 600;
+    color: var(--tinta);
+}
+
+.necessidade p {
+    font-size: clamp(14px, 4vw, 16px);
+    line-height: 1.4;
+    color: var(--texto-suave);
+}
+
+
+/* ---------------------------------------------------------
+   LIÇÃO 2 — ÁGUA E UMIDADE
+--------------------------------------------------------- */
+
+.aguaPlanta {
+    text-align: left;
+}
+
+/* Gota caindo sobre a plantinha: único movimento da página */
+.ilustracaoAgua {
+    position: relative;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+
+    height: clamp(110px, 28vw, 150px);
+    margin-top: clamp(20px, 5vw, 28px);
+}
+
+.plantaAgua {
+    font-size: clamp(54px, 15vw, 76px);
+    line-height: 1;
+}
+
+.gotaAgua {
+    position: absolute;
+    top: 0;
+    left: 50%;
+
+    font-size: clamp(28px, 8vw, 38px);
+    line-height: 1;
+
+    animation: cair 2.6s ease-in-out infinite;
+}
+
+@keyframes cair {
+    0%, 100% { transform: translate(-50%, -4px); opacity: 0.75; }
+    50%      { transform: translate(-50%, 10px); opacity: 1; }
+}
+
+/* As opções ficam em .opcoesUmidade (coluna) */
+.opcoesUmidade {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(10px, 2.8vw, 12px);
+
+    margin-top: clamp(18px, 4.5vw, 22px);
+}
+
+/* "Cada planta é diferente": ícone ao lado, texto em duas linhas */
+.comparacaoPlantas {
+    display: grid;
+    grid-template-columns: 1fr;
+
+    margin-top: clamp(16px, 4vw, 20px);
+}
+
+.plantaNecessidade {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 14px;
+    row-gap: 2px;
+
+    padding: clamp(14px, 4vw, 18px) 4px;
+}
+
+.plantaNecessidade + .plantaNecessidade {
+    border-top: 1px solid var(--linha);
+}
+
+.plantaNecessidade span {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    align-self: start;
+
+    font-size: clamp(26px, 7vw, 32px);
+    line-height: 1;
+}
+
+.plantaNecessidade h3 {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.plantaNecessidade p {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+
+/* ---------------------------------------------------------
+   LIÇÃO 3 — A IMPORTÂNCIA DA LUZ
+--------------------------------------------------------- */
+
+/* A "equação" da fotossíntese: ingredientes + seta + resultado */
+.processoFotossintese {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(8px, 2.6vw, 12px);
+
+    margin-top: clamp(20px, 5.5vw, 26px);
+}
+
+.ingredienteFotossintese,
+.resultadoFotossintese {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+
+    min-width: 76px;
+    padding: clamp(12px, 3.6vw, 16px) clamp(8px, 2.6vw, 12px);
+
+    border-radius: 18px;
+    text-align: center;
+}
+
+.ingredienteFotossintese {
+    background-color: var(--fundo-item);
+}
+
+/* O resultado ganha um contorno em tinta */
+.resultadoFotossintese {
+    background-color: var(--card);
+    border: 1.5px solid rgba(30, 59, 62, 0.25);
+}
+
+.ingredienteFotossintese span,
+.resultadoFotossintese span {
+    font-size: clamp(22px, 6vw, 26px);
+    line-height: 1;
+}
+
+.ingredienteFotossintese strong,
+.resultadoFotossintese strong {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(11.5px, 3.1vw, 13px);
+    font-weight: 600;
+    color: var(--texto);
+}
+
+.resultadoFotossintese small {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(9.5px, 2.6vw, 11px);
+    font-weight: 600;
+    color: var(--texto-suave);
+}
+
+.sinalFotossintese,
+.setaFotossintese,
+.maisFotossintese {
+    flex-shrink: 0;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(17px, 4.6vw, 20px);
+    font-weight: 700;
+    color: var(--texto-suave);
+}
+
+.setaFotossintese {
+    color: var(--tinta);
+    font-size: clamp(19px, 5.2vw, 23px);
+}
+
+.explicacaoFotossintese {
+    margin-top: clamp(18px, 4.5vw, 22px);
+    padding-top: clamp(14px, 3.5vw, 16px);
+
+    border-top: 1px solid var(--linha);
+
+    font-size: clamp(13px, 3.6vw, 14.5px);
+    line-height: 1.5;
+    color: var(--texto-suave);
+}
+
+
+/* ---------------------------------------------------------
+   LIÇÃO 4 — COMO CUIDAR DA SUA PLANTA
+   Tudo vem de componentes.css (opções, listas, painel pêssego).
+--------------------------------------------------------- */
+
+.opcoesCuidado {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(10px, 2.8vw, 12px);
+
+    margin-top: clamp(18px, 4.5vw, 22px);
+}
+
+
+/* ---------------------------------------------------------
+   LIÇÃO 5 — CONHECENDO OS CACTOS
+--------------------------------------------------------- */
+
+/* "O que o cacto gosta?": dois cartões brancos + uma dica */
+.necessidadesCacto {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(12px, 3.2vw, 16px);
+
+    margin-top: clamp(16px, 4vw, 20px);
+}
+
+.necessidadeCacto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+
+    padding: clamp(14px, 4vw, 18px) clamp(8px, 2.6vw, 12px);
+    text-align: center;
+
+    background-color: var(--card);
+    border-radius: 18px;
+}
+
+.iconeNecessidadeCacto {
+    font-size: clamp(26px, 7vw, 32px);
+    line-height: 1;
+    margin-bottom: 2px;
+}
+
+/* Destaque extra de alguns itens (ex.: "Muita luz") */
+.necessidadeCacto strong {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(11.5px, 3vw, 12.5px);
+    font-weight: 600;
+    color: #3C7A63;
+}
+
+/* A dica fica no mesmo painel, em branco com uma barra em tinta
+   (âmbar é só para o "Você sabia?") */
+.dicaCacto {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+
+    margin-top: clamp(14px, 3.6vw, 18px);
+    padding: clamp(14px, 4vw, 16px) clamp(16px, 4.4vw, 18px);
+
+    background-color: var(--card);
+    border-radius: 18px;
+    border-left: 4px solid var(--tinta);
+}
+
+.dicaCacto span {
+    flex-shrink: 0;
+    font-size: clamp(18px, 5vw, 20px);
+    line-height: 1.4;
+}
+
+.dicaCacto p {
+    font-size: clamp(12.5px, 3.4vw, 14px);
+    line-height: 1.5;
+    color: var(--texto-suave);
+}
+
+.dicaCacto strong {
+    color: var(--texto);
+}
+
+/* "Detetive dos cactos": o acordeão em si está em componentes.css */
+.detalhesCacto {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(10px, 2.8vw, 12px);
+
+    margin-top: clamp(18px, 4.5vw, 22px);
+}
+
+.respostaDetalheCacto {
+    padding: 4px clamp(16px, 4.5vw, 18px) clamp(15px, 4.2vw, 17px);
+}
+
+.respostaDetalheCacto p {
+    font-size: clamp(13px, 3.6vw, 14.5px);
+    line-height: 1.5;
+    color: var(--texto-suave);
+}
+
+/* "Cactos de vários formatos!": galeria com selo circular */
+.galeriaCactos {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(14px, 3.6vw, 18px);
+
+    margin-top: clamp(16px, 4vw, 20px);
+}
+
+.tipoCacto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+
+    padding: clamp(16px, 4.5vw, 20px) clamp(10px, 3vw, 14px);
+    text-align: center;
+
+    background-color: var(--card);
+    border-radius: 20px;
+}
+
+.ilustracaoTipoCacto {
+    display: grid;
+    place-items: center;
+
+    width: clamp(56px, 15vw, 64px);
+    aspect-ratio: 1;
+
+    font-size: clamp(26px, 7vw, 30px);
+
+    background-color: var(--fundo-item);
+    border-radius: 50%;
+}
+
+.tipoCacto h3 {
+    margin-top: 4px;
+}
+
+/* "E agora, pequeno jardineiro?": a resposta escondida */
+.desafioCacto > p strong {
+    color: var(--tinta);
+}
+
+.respostaDesafioCacto {
+    margin-top: clamp(18px, 4.5vw, 22px);
+}
+
+.respostaDesafioCacto summary {
+    padding: clamp(14px, 4vw, 16px) clamp(16px, 4.5vw, 18px);
+
+    font-size: clamp(14.5px, 3.9vw, 16px);
+    font-weight: 700;
+}
+
+.respostaDesafioCacto summary::after {
+    content: "🔍";
+    flex-shrink: 0;
+    font-size: clamp(15px, 4vw, 17px);
+}
+
+.respostaDesafioCacto[open] summary::after {
+    content: "✓";
+}
+
+.respostaDesafioCacto > div {
+    padding: 4px clamp(16px, 4.5vw, 18px) clamp(16px, 4.5vw, 18px);
+}
+
+.respostaDesafioCacto > div p {
+    font-size: clamp(13px, 3.6vw, 14.5px);
+    line-height: 1.5;
+    color: var(--texto-suave);
+}
+
+.respostaDesafioCacto > div p + p {
+    margin-top: 10px;
+}
+
+
+/* ==========================================================
+   TELAS BEM PEQUENAS
+========================================================== */
+
+@media (max-width: 340px) {
+    .necessidades {
+        grid-template-columns: 1fr;
+    }
+
+    .necessidade {
+        border-right: none;
+        border-bottom: 1px solid var(--linha);
+    }
+
+    .necessidade:last-child {
+        border-bottom: none;
+    }
+}
+
+
+/* ==========================================================
+   TABLET E TELAS GRANDES
+========================================================== */
+
+@media (min-width: 700px) {
+
+    /* Base */
+    .licao section + section { margin-top: 64px; }
+
+    .licao h2          { font-size: 33px; }
+    .licao section > p { font-size: 21px; }
+
+    .imagemLicao { border-radius: 26px; }
+
+    /* Blocos comuns */
+    .conteudoCuriosidade {
+        padding: 26px 28px;
+        border-radius: 28px;
+    }
+
+    .conteudoCuriosidade h3 { font-size: 24px; }
+    .conteudoCuriosidade p  { font-size: 24px; }
+
+    .conexaoPlantAmigo {
+        padding: 26px 30px;
+        border-radius: 28px;
+    }
+
+    .conteudoConexao h3 { font-size: 26px; }
+    .conteudoConexao p  { font-size: 22px; }
+
+    .finalLicao h3 { font-size: 28px; }
+    .finalLicao p  { font-size: 22px; }
+
+    /* Lição 1 */
+    .necessidadesPlanta { --pad-modulo: 32px; }
+
+    .partePlanta {
+        padding: 12px 22px;
+        font-size: 22px;
+    }
+
+    .necessidade     { padding: 22px 24px; }
+    .necessidade h3  { font-size: 24px; }
+    .necessidade p   { font-size: 21px; }
+
+    /* Lição 2 */
+    .comparacaoPlantas {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .plantaNecessidade {
+        padding: 22px 20px;
+    }
+
+    .plantaNecessidade + .plantaNecessidade {
+        border-top: none;
+        border-left: 1px solid var(--linha);
+    }
+
+    /* Lição 3 */
+    .processoFotossintese {
+        gap: 16px;
+        margin-top: 30px;
+    }
+
+    .ingredienteFotossintese,
+    .resultadoFotossintese {
+        min-width: 92px;
+        padding: 18px 14px;
+    }
+
+    .ingredienteFotossintese strong,
+    .resultadoFotossintese strong { font-size: 20px; }
+
+    .resultadoFotossintese small { font-size: 20px; }
+
+    .sinalFotossintese,
+    .maisFotossintese { font-size: 22px; }
+
+    .setaFotossintese { font-size: 29px; }
+
+    .explicacaoFotossintese { font-size: 15px; }
+
+    /* Lição 5 */
+    .dicaCacto p { font-size: 18px; }
+
+    .respostaDetalheCacto p { font-size: 19px; }
+
+    .galeriaCactos {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .respostaDesafioCacto summary {
+        padding: 18px 22px;
+        font-size: 22px;
+    }
+
+    .respostaDesafioCacto > div p { font-size: 19px; }
+}
+
+
+/* >>>>>>>>>> paginas/quiz.css <<<<<<<<<< */
+
+/* ==========================================================
+   QUIZ
+   Serve para todos os quizzes (quiz1, quiz2...).
+   A pergunta (card), as opções e os botões Próxima/Continuar
+   têm as regras principais em componentes.css.
+========================================================== */
+
+
+/* =========================
+   ESTRUTURA E RITMO
+========================= */
+
+.quiz {
+    padding-bottom: clamp(32px, 8vh, 56px);
+}
+
+.cabecalhoQuiz {
+    margin-top: clamp(20px, 5vh, 32px);
+
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 12px;
+    row-gap: clamp(10px, 2.5vw, 14px);
+}
+
+.cabecalhoQuiz.oculto {
+    display: none;
+}
+
+
+/* =========================
+   PROGRESSO E PONTOS
+========================= */
+
+.progressoQuiz {
+    grid-column: 1 / -1;
+
+    height: 8px;
+
+    background-color: var(--trilho);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progressoBarra {
+    height: 100%;
+    width: 0%;
+
+    background: linear-gradient(90deg, #8BDCF7, #9BE8C6);
+    border-radius: 999px;
+
+    transition: width 0.4s ease;
+}
+
+.numeroQuiz {
+    grid-column: 1;
+    align-self: center;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(13px, 3.6vw, 14.5px);
+    font-weight: 600;
+    color: var(--texto-suave);
+}
+
+.pontosQuiz {
+    grid-column: 2;
+    align-self: center;
+
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(13px, 3.6vw, 14.5px);
+    color: var(--tinta);
+}
+
+.pontosQuiz #pontosQuiz {
+    font-size: clamp(15px, 4.2vw, 17px);
+    font-weight: 700;
+}
+
+
+/* =========================
+   PERGUNTA E OPÇÕES
+========================= */
+
+.perguntaQuiz {
+    margin-top: clamp(20px, 5.5vw, 28px);
+}
+
+.perguntaQuiz.oculto {
+    display: none;
+}
+
+.perguntaQuiz h2 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(18px, 5vw, 21px);
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--texto);
+}
+
+.opcoesQuiz {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(10px, 2.8vw, 12px);
+
+    margin-top: clamp(18px, 4.5vw, 22px);
+}
+
+/* No quiz as opções mantêm o creme (o resto do app usa o tom neutro) */
+.opcaoQuiz {
+    background-color: #FFF8F2;
+}
+
+/* Pontinho antes de responder */
+.opcaoQuiz::before {
+    content: "";
+    flex-shrink: 0;
+
+    width: 7px;
+    height: 7px;
+
+    background-color: var(--menta-forte);
+    border-radius: 50%;
+
+    transition: opacity 0.15s ease;
+}
+
+/* Depois de responder: as neutras ficam discretas */
+.opcaoQuiz:disabled:not(.correta):not(.incorreta) {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.opcaoQuiz.correta,
+.opcaoQuiz.incorreta {
+    cursor: default;
+}
+
+.opcaoQuiz.correta {
+    background-color: var(--menta-forte);
+    color: var(--verde-escuro);
+}
+
+.opcaoQuiz.incorreta {
+    background-color: var(--pessego);
+    color: var(--marrom-atencao);
+}
+
+.opcaoQuiz.correta::before,
+.opcaoQuiz.incorreta::before {
+    opacity: 0;
+}
+
+.opcaoQuiz.correta::after,
+.opcaoQuiz.incorreta::after {
+    margin-left: auto;
+    font-weight: 700;
+}
+
+.opcaoQuiz.correta::after   { content: "✓"; }
+.opcaoQuiz.incorreta::after { content: "✕"; }
+
+
+/* =========================
+   FEEDBACK
+   Menta = acerto, pêssego = quase lá (nunca vermelho).
+========================= */
+
+.feedbackQuiz {
+    display: none;
+
+    margin-top: clamp(16px, 4vw, 20px);
+    padding: clamp(16px, 4.5vw, 20px);
+
+    border-radius: 20px;
+}
+
+.feedbackQuiz.mostrar {
+    display: block;
+}
+
+.feedbackQuiz.acerto {
+    background-color: var(--fundo-acerto);
+}
+
+.feedbackQuiz.erro {
+    background-color: var(--painel-atencao);
+}
+
+.feedbackQuiz h3 {
+    margin-bottom: 4px;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(15.5px, 4.2vw, 17px);
+    font-weight: 700;
+}
+
+.feedbackQuiz.acerto h3 { color: var(--verde-escuro); }
+.feedbackQuiz.erro h3   { color: var(--marrom-atencao); }
+
+.feedbackQuiz p {
+    font-size: clamp(13.5px, 3.6vw, 15px);
+    line-height: 1.5;
+    color: var(--texto-suave);
+}
+
+
+/* =========================
+   BOTÕES PRÓXIMA E CONTINUAR
+   (estilo: componentes.css)
+========================= */
+
+.btnProxima,
+.btnContinuar {
+    margin-top: clamp(20px, 5vw, 26px);
+}
+
+/* A "Próxima" só aparece depois de responder (o JS põe .mostrar) */
+.btnProxima {
+    display: none;
+}
+
+.btnProxima.mostrar {
+    display: flex;
+}
+
+
+/* =========================
+   RESULTADO FINAL
+========================= */
+
+.resultadoQuiz {
+    display: none;
+    text-align: center;
+}
+
+.resultadoQuiz.mostrar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin-top: clamp(28px, 7vh, 44px);
+}
+
+.resultadoMascote {
+    position: relative;
+    isolation: isolate;
+
+    display: grid;
+    place-items: center;
+
+    width: clamp(96px, 26vw, 120px);
+    aspect-ratio: 1;
+    margin-bottom: clamp(16px, 4vw, 20px);
+
+    font-size: clamp(44px, 12vw, 56px);
+}
+
+.resultadoMascote::before {
+    content: "";
+
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+
+    background: radial-gradient(circle, var(--menta) 0%, var(--agua) 60%, transparent 80%);
+    border-radius: 50%;
+
+    filter: blur(28px);
+    opacity: 0.85;
+}
+
+.resultadoQuiz h2 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(22px, 6.2vw, 27px);
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--tinta);
+}
+
+.resultadoQuiz > p {
+    margin-top: 8px;
+    margin-bottom: clamp(20px, 5vw, 26px);
+
+    max-width: 34ch;
+
+    font-size: clamp(14px, 3.8vw, 16px);
+    line-height: 1.5;
+    color: var(--texto-suave);
+}
+
+.pontuacaoFinal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+
+    padding: clamp(14px, 4vw, 18px) clamp(22px, 6vw, 30px);
+    margin-bottom: clamp(22px, 5.5vw, 28px);
+
+    background-color: var(--fundo-acerto);
+    border-radius: 20px;
+}
+
+.pontuacaoFinal span {
+    font-family: 'Nunito', sans-serif;
+    font-size: clamp(13px, 3.6vw, 14px);
+    color: var(--texto-suave);
+}
+
+.pontuacaoFinal strong {
+    margin-top: 2px;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(20px, 5.6vw, 24px);
+    font-weight: 700;
+    color: var(--verde-escuro);
+}
+
+
+/* =========================
+   TABLET E TELAS GRANDES
+========================= */
+
+@media (min-width: 700px) {
+
+    .perguntaQuiz h2 { font-size: 24px; }
+
+    .feedbackQuiz {
+        padding: 22px 26px;
+        border-radius: 24px;
+    }
+
+    .feedbackQuiz h3 { font-size: 20px; }
+    .feedbackQuiz p  { font-size: 18px; }
+
+    .resultadoQuiz h2  { font-size: 30px; }
+    .resultadoQuiz > p { font-size: 18px; }
+
+    .pontuacaoFinal { padding: 18px 34px; }
+    .pontuacaoFinal strong { font-size: 26px; }
+}
+
+
+/* >>>>>>>>>> assinatura.css <<<<<<<<<< */
+
+/* ==========================================================
+   ASSINATURA DO PLANTAMIGO
+   Cantos de folha: dois cantos redondos, dois quase retos.
+========================================================== */
+
+/* ---------- 1. CANTOS DE FOLHA ---------- */
+
+.explorarPlanta,
+.umidadeInterativa,
+.cuidadosInterativos,
+.explorarCacto,
+.desafioCacto,
+.fotossinteseLicao,
+.conhecendoCactos,
+.cuidadosCacto,
+.perguntaQuiz,
+.necessidadesPlanta,
+.necessidadeAgua,
+.necessidadeLuz,
+.cuidadosImportantes,
+.guiaCacto,
+.tiposCactos,
+.sinaisPlanta,
+.imagemLicao {
+    border-radius: var(--raio-folha);
+}
+
+.numeroLicao,
+.imagemPlanta {
+    border-radius: var(--raio-folha-pequena);
+}
