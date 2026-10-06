@@ -1,5 +1,4 @@
-/* Meu PlantAmigo — versão em arquivo único (gerada a partir da pasta css/).
-   Para publicar, use este arquivo no lugar de style.css + pastas. */
+
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap');
 
 
@@ -136,9 +135,7 @@ header {
     padding-top: max(clamp(16px, 4vw, 24px), env(safe-area-inset-top, 0px));
 }
 
-/* Logo: aparece como imagem de fundo; o texto "Meu PlantAmigo"
-   continua no HTML (leitores de tela e busca), só não aparece.
-   O caminho é relativo a este arquivo: coloque o arquivo em IMG/. */
+/* Logo */
 header .titulo {
     flex-shrink: 0;
 
@@ -152,13 +149,13 @@ header .titulo {
     background: url('../IMG/logotipo-plantamigo.png') left center / contain no-repeat;
 }
 
-/* Nas lições e nos quizzes o logotipo fica menor, para o conteúdo ser o destaque */
+
 body:has(main.licao) header .titulo,
 body:has(main.quiz) header .titulo {
     height: clamp(22px, 6.2vw, 26px);
 }
 
-/* Engrenagem: selinho de folha + ícone Phosphor (duotone) */
+/* Engrenagem*/
 .configuracoes {
     display: flex;
     align-items: center;
@@ -168,7 +165,7 @@ body:has(main.quiz) header .titulo {
     height: 46px;
     flex-shrink: 0;
 
-    font-size: 0;            /* se sobrar algum emoji no HTML, ele não aparece */
+    font-size: 0;           
     color: var(--tinta);
     text-decoration: none;
 
@@ -203,8 +200,6 @@ body:has(main.quiz) header .titulo {
 
 /* =========================
    NAVEGAÇÃO INFERIOR
-   Ícones SVG de linha (Lucide). A cor vem de currentColor:
-   cinza nos links normais, tinta na página atual.
 ========================= */
 
 nav {
@@ -372,7 +367,6 @@ nav a:active {
 
 /* =========================
    ACESSIBILIDADE
-   Quem prefere menos movimento não vê animações.
 ========================= */
 
 @media (prefers-reduced-motion: reduce) {
@@ -398,8 +392,6 @@ nav a:active {
 
 /* =========================
    1. BOTÃO DE AÇÃO PRINCIPAL
-   Um por página, sempre o que leva adiante.
-   Gradiente azul → menta + sombra suave.
 ========================= */
 
 #btnRegar,
@@ -453,7 +445,7 @@ nav a:active {
     outline-offset: 5px;
 }
 
-/* Desativado (Regar sem reservatório, Começar sem escolhas) */
+/* Desativado */
 #btnRegar:disabled,
 .btnComecar:disabled {
     cursor: not-allowed;
@@ -465,7 +457,7 @@ nav a:active {
 }
 
 
-/* --- Botão grande (Regar, Personalizar, Começar) --- */
+/* --- Botão grande--- */
 
 #btnRegar,
 .btnPersonalizar,
@@ -490,16 +482,12 @@ nav a:active {
     border-radius: var(--btn-raio);
 }
 
-/* O Regar é a ação principal do app: um pouco maior */
 #btnRegar {
     --btn-altura: clamp(68px, 18vw, 80px);
     --btn-raio: 26px;
     --btn-fonte: clamp(21px, 6vw, 25px);
 }
 
-/* Ícone num círculo branco, à esquerda (a imagem de cada um
-   fica junto do botão: Regar em cuidar.css, Personalizar em
-   mascote.css) */
 #btnRegar::before,
 .btnPersonalizar::before {
     content: "";
@@ -520,8 +508,6 @@ nav a:active {
     border-radius: 50%;
 }
 
-
-/* --- Botão em pílula (Fazer o quiz, Próxima, Continuar) --- */
 
 .btnQuiz,
 .btnProxima,
@@ -544,7 +530,6 @@ nav a:active {
    2. CARD E PAINEL
    Card branco com sombra  = bloco de atividade ou destaque.
    Painel plano, sem sombra = bloco de leitura.
-   O tamanho muda sozinho no tablet (--pad-modulo/--raio-modulo).
 ========================= */
 
 .explorarPlanta,
@@ -575,7 +560,6 @@ nav a:active {
     box-shadow: 0 0 0 2px var(--fio-painel);
 }
 
-/* Painéis de leitura: título em petróleo (a cor de destaque do app) */
 .licao :is(.necessidadesPlanta, .necessidadeAgua, .necessidadeLuz,
            .cuidadosImportantes, .guiaCacto, .tiposCactos, .sinaisPlanta) h2 {
     color: var(--petroleo);
@@ -584,8 +568,6 @@ nav a:active {
 
 /* =========================
    3. OPÇÃO SELECIONÁVEL EM LINHA
-   Umidade (lição 2), Cuidados (lição 4) e Quiz.
-   Selecionado = menta-forte, a mesma cor em todo o app.
 ========================= */
 
 .opcaoUmidade,
@@ -614,7 +596,6 @@ nav a:active {
     -webkit-tap-highlight-color: transparent;
 }
 
-/* A explicação nasce dentro do botão e vai para a linha de baixo */
 .opcaoUmidade,
 .opcaoCuidado {
     flex-wrap: wrap;
@@ -762,9 +743,6 @@ nav a:active {
 
 /* =========================
    5. LISTAS DENTRO DE UM PAINEL
-   Duas formas, separadas por fios finos:
-   - em colunas (ícone em cima, texto centralizado)
-   - em linhas  (ícone ao lado do texto)
 ========================= */
 
 /* --- em colunas: 1 por linha no celular, 3 lado a lado no tablet --- */
@@ -856,8 +834,7 @@ nav a:active {
 }
 
 
-/* --- texto dos itens (vale para as duas formas e para os
-       cartões brancos dentro de painéis) --- */
+/* --- texto dos itens --- */
 
 :is(.plantaLuz, .caracteristicaCacto, .sinal, .cuidado, .passoCacto,
     .necessidadeCacto, .tipoCacto, .plantaNecessidade) h3 {
@@ -876,8 +853,6 @@ nav a:active {
 
 /* =========================
    6. CARD SELECIONÁVEL (cadastro)
-   Planta, mascote e tipo de irrigação.
-   Selecionado = contorno menta + selinho ✓.
 ========================= */
 
 .cardPlanta,
@@ -951,7 +926,6 @@ nav a:active {
 
 /* =========================
    7. MASCOTE (imagem)
-   Usado na Início e na página do mascote.
 ========================= */
 
 .mascote-img {
@@ -1083,8 +1057,6 @@ nav a:active {
 
 /* ==========================================================
    PÁGINA INÍCIO
-   A imagem do mascote (.mascote-img) está em componentes.css,
-   porque a página do mascote usa a mesma.
 ========================================================== */
 
 
@@ -1375,7 +1347,6 @@ nav a:active {
 
 /* =========================
    RITMO E ESPAÇAMENTO
-   (--espaco-secao vem do main, em base.css)
 ========================= */
 
 .tipo_planta {
@@ -1388,7 +1359,6 @@ nav a:active {
     margin-top: var(--espaco-secao);
 }
 
-/* mais respiro ao redor do botão (a ação principal) */
 .irrigacao {
     margin-top: calc(var(--espaco-secao) + 8px);
 }
@@ -1563,7 +1533,6 @@ nav a:active {
 
 /* =========================
    IRRIGAÇÃO
-   O botão em si (cor, tamanho, estados) está em componentes.css.
 ========================= */
 
 .regar {
@@ -1782,8 +1751,6 @@ nav a:active {
 
 /* ==========================================================
    PÁGINA MASCOTE
-   A imagem (.mascote-img) e o botão (.btnPersonalizar) têm
-   as regras principais em componentes.css.
 ========================================================== */
 
 
@@ -2022,9 +1989,6 @@ nav a:active {
 
 /* ==========================================================
    PÁGINA CADASTRO
-   O comportamento de "card selecionável" (contorno menta + ✓)
-   está em componentes.css. Aqui ficam só tamanhos e cores
-   de cada tipo de card.
 ========================================================== */
 
 
@@ -2259,7 +2223,6 @@ main.cadastro > * + * {
     color: var(--texto);
 }
 
-/* o selinho ✓ é um pouco maior nos cards grandes */
 .cardMascote.selecionado::after {
     width: 24px;
     height: 24px;
@@ -2314,7 +2277,6 @@ main.cadastro > * + * {
 
 /* =========================
    BOTÃO FINAL
-   (.btnComecar: estilo em componentes.css)
 ========================= */
 
 
@@ -2452,7 +2414,7 @@ main.cadastro > * + * {
 .blocoAprender {
     margin-top: clamp(32px, 8vw, 48px);
 
-    --acento: var(--menta);   /* cor padrão, trocada por bloco abaixo */
+    --acento: var(--menta);  
 }
 
 .blocoAprender:nth-of-type(2) { --acento: var(--agua); }
@@ -2651,15 +2613,6 @@ main.cadastro > * + * {
 
 /* ==========================================================
    LIÇÕES
-   Ordem deste arquivo:
-   1. Base de toda lição (título, ritmo, voltar, imagem)
-   2. Blocos que aparecem em quase toda lição
-      (curiosidade, conexão com o PlantAmigo, fechamento)
-   3. O que é exclusivo de cada lição (1 a 5)
-
-   Cards, painéis, opções, acordeão e listas já estão em
-   componentes.css. Uma lição nova só precisa de uma seção
-   aqui se tiver algo que ainda não existe.
 ========================================================== */
 
 
