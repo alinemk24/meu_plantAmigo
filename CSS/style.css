@@ -1,9 +1,6 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap');
 
-
-/* >>>>>>>>>> base.css <<<<<<<<<< */
-
+/* ===== base.css ===== */
 /* ==========================================================
    BASE — cores, medidas, reset, cabeçalho e navegação
    Tudo aqui vale para o app inteiro.
@@ -17,7 +14,7 @@
 
 :root {
     /* Cores principais */
-    --fundo-item: #d7f2f8;        /* fundo neutro de opções, chips e acordeões dentro dos cards */
+    --fundo-item: #F0F5F2;        /* fundo neutro de opções, chips e acordeões dentro dos cards */
     --card: #FFFFFF;
     --texto: #2E2C28;
     --texto-suave: #4D4B45;       /* texto de apoio: escuro o bastante para ler fácil */
@@ -135,7 +132,9 @@ header {
     padding-top: max(clamp(16px, 4vw, 24px), env(safe-area-inset-top, 0px));
 }
 
-/* Logo */
+/* Logo: aparece como imagem de fundo; o texto "Meu PlantAmigo"
+   continua no HTML (leitores de tela e busca), só não aparece.
+   O caminho é relativo a este arquivo: coloque o arquivo em IMG/. */
 header .titulo {
     flex-shrink: 0;
 
@@ -149,13 +148,13 @@ header .titulo {
     background: url('../IMG/logotipo-plantamigo.png') left center / contain no-repeat;
 }
 
-
+/* Nas lições e nos quizzes o logotipo fica menor, para o conteúdo ser o destaque */
 body:has(main.licao) header .titulo,
 body:has(main.quiz) header .titulo {
     height: clamp(22px, 6.2vw, 26px);
 }
 
-/* Engrenagem*/
+/* Engrenagem: selinho de folha + ícone Phosphor (duotone) */
 .configuracoes {
     display: flex;
     align-items: center;
@@ -165,7 +164,7 @@ body:has(main.quiz) header .titulo {
     height: 46px;
     flex-shrink: 0;
 
-    font-size: 0;           
+    font-size: 0;            /* se sobrar algum emoji no HTML, ele não aparece */
     color: var(--tinta);
     text-decoration: none;
 
@@ -200,6 +199,8 @@ body:has(main.quiz) header .titulo {
 
 /* =========================
    NAVEGAÇÃO INFERIOR
+   Ícones SVG de linha (Lucide). A cor vem de currentColor:
+   cinza nos links normais, tinta na página atual.
 ========================= */
 
 nav {
@@ -367,6 +368,7 @@ nav a:active {
 
 /* =========================
    ACESSIBILIDADE
+   Quem prefere menos movimento não vê animações.
 ========================= */
 
 @media (prefers-reduced-motion: reduce) {
@@ -379,8 +381,7 @@ nav a:active {
 }
 
 
-/* >>>>>>>>>> componentes.css <<<<<<<<<< */
-
+/* ===== componentes.css ===== */
 /* ==========================================================
    COMPONENTES — peças que se repetem em várias páginas
    Os nomes de classe são os mesmos dos HTMLs: aqui só
@@ -392,6 +393,8 @@ nav a:active {
 
 /* =========================
    1. BOTÃO DE AÇÃO PRINCIPAL
+   Um por página, sempre o que leva adiante.
+   Gradiente azul → menta + sombra suave.
 ========================= */
 
 #btnRegar,
@@ -399,7 +402,8 @@ nav a:active {
 .btnComecar,
 .btnQuiz,
 .btnProxima,
-.btnContinuar {
+.btnContinuar,
+.botaoSalvarConfiguracao {
     font-family: 'Fredoka', sans-serif;
     font-weight: 700;
     color: var(--petroleo);
@@ -421,7 +425,8 @@ nav a:active {
 .btnComecar:hover,
 .btnQuiz:hover,
 .btnProxima:hover,
-.btnContinuar:hover {
+.btnContinuar:hover,
+.botaoSalvarConfiguracao:hover {
     transform: translateY(-2px);
 }
 
@@ -430,7 +435,8 @@ nav a:active {
 .btnComecar:active,
 .btnQuiz:active,
 .btnProxima:active,
-.btnContinuar:active {
+.btnContinuar:active,
+.botaoSalvarConfiguracao:active {
     transform: translateY(2px) scale(0.99);
     box-shadow: var(--sombra-acao-pressionado);
 }
@@ -440,12 +446,13 @@ nav a:active {
 .btnComecar:focus-visible,
 .btnQuiz:focus-visible,
 .btnProxima:focus-visible,
-.btnContinuar:focus-visible {
+.btnContinuar:focus-visible,
+.botaoSalvarConfiguracao:focus-visible {
     outline: 4px solid var(--tinta);
     outline-offset: 5px;
 }
 
-/* Desativado */
+/* Desativado (Regar sem reservatório, Começar sem escolhas) */
 #btnRegar:disabled,
 .btnComecar:disabled {
     cursor: not-allowed;
@@ -457,7 +464,7 @@ nav a:active {
 }
 
 
-/* --- Botão grande--- */
+/* --- Botão grande (Regar, Personalizar, Começar) --- */
 
 #btnRegar,
 .btnPersonalizar,
@@ -482,12 +489,16 @@ nav a:active {
     border-radius: var(--btn-raio);
 }
 
+/* O Regar é a ação principal do app: um pouco maior */
 #btnRegar {
     --btn-altura: clamp(68px, 18vw, 80px);
     --btn-raio: 26px;
     --btn-fonte: clamp(21px, 6vw, 25px);
 }
 
+/* Ícone num círculo branco, à esquerda (a imagem de cada um
+   fica junto do botão: Regar em cuidar.css, Personalizar em
+   mascote.css) */
 #btnRegar::before,
 .btnPersonalizar::before {
     content: "";
@@ -508,6 +519,8 @@ nav a:active {
     border-radius: 50%;
 }
 
+
+/* --- Botão em pílula (Fazer o quiz, Próxima, Continuar) --- */
 
 .btnQuiz,
 .btnProxima,
@@ -530,6 +543,7 @@ nav a:active {
    2. CARD E PAINEL
    Card branco com sombra  = bloco de atividade ou destaque.
    Painel plano, sem sombra = bloco de leitura.
+   O tamanho muda sozinho no tablet (--pad-modulo/--raio-modulo).
 ========================= */
 
 .explorarPlanta,
@@ -548,6 +562,7 @@ nav a:active {
 }
 
 .necessidadesPlanta,
+.aguaPlanta,
 .necessidadeAgua,
 .necessidadeLuz,
 .cuidadosImportantes,
@@ -560,7 +575,8 @@ nav a:active {
     box-shadow: 0 0 0 2px var(--fio-painel);
 }
 
-.licao :is(.necessidadesPlanta, .necessidadeAgua, .necessidadeLuz,
+/* Painéis de leitura: título em petróleo (a cor de destaque do app) */
+.licao :is(.necessidadesPlanta, .aguaPlanta, .necessidadeAgua, .necessidadeLuz,
            .cuidadosImportantes, .guiaCacto, .tiposCactos, .sinaisPlanta) h2 {
     color: var(--petroleo);
 }
@@ -568,6 +584,8 @@ nav a:active {
 
 /* =========================
    3. OPÇÃO SELECIONÁVEL EM LINHA
+   Umidade (lição 2), Cuidados (lição 4) e Quiz.
+   Selecionado = menta-forte, a mesma cor em todo o app.
 ========================= */
 
 .opcaoUmidade,
@@ -596,6 +614,7 @@ nav a:active {
     -webkit-tap-highlight-color: transparent;
 }
 
+/* A explicação nasce dentro do botão e vai para a linha de baixo */
 .opcaoUmidade,
 .opcaoCuidado {
     flex-wrap: wrap;
@@ -743,6 +762,9 @@ nav a:active {
 
 /* =========================
    5. LISTAS DENTRO DE UM PAINEL
+   Duas formas, separadas por fios finos:
+   - em colunas (ícone em cima, texto centralizado)
+   - em linhas  (ícone ao lado do texto)
 ========================= */
 
 /* --- em colunas: 1 por linha no celular, 3 lado a lado no tablet --- */
@@ -834,7 +856,8 @@ nav a:active {
 }
 
 
-/* --- texto dos itens --- */
+/* --- texto dos itens (vale para as duas formas e para os
+       cartões brancos dentro de painéis) --- */
 
 :is(.plantaLuz, .caracteristicaCacto, .sinal, .cuidado, .passoCacto,
     .necessidadeCacto, .tipoCacto, .plantaNecessidade) h3 {
@@ -853,6 +876,8 @@ nav a:active {
 
 /* =========================
    6. CARD SELECIONÁVEL (cadastro)
+   Planta, mascote e tipo de irrigação.
+   Selecionado = contorno menta + selinho ✓.
 ========================= */
 
 .cardPlanta,
@@ -926,6 +951,7 @@ nav a:active {
 
 /* =========================
    7. MASCOTE (imagem)
+   Usado na Início e na página do mascote.
 ========================= */
 
 .mascote-img {
@@ -1053,10 +1079,46 @@ nav a:active {
 }
 
 
-/* >>>>>>>>>> paginas/home.css <<<<<<<<<< */
+/* ===== icones.css ===== */
+/* ==========================================================
+   ÍCONES (Phosphor, versão duotone)
+   Cada ícone é definido uma vez aqui e usado no HTML assim:
+       <i class="icone icone-gota"></i>
+   Ele herda a cor do texto (currentColor) e o tamanho da fonte,
+   então para mudar cor ou tamanho basta mexer no elemento que o contém.
+   Para trocar um ícone, troque só o desenho da linha correspondente.
+========================================================== */
 
+.icone {
+    display: inline-block;
+    flex-shrink: 0;
+
+    width: 1em;
+    height: 1em;
+
+    background-color: currentColor;
+
+    -webkit-mask: var(--icone) no-repeat center / contain;
+            mask: var(--icone) no-repeat center / contain;
+}
+
+.icone-planta { --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M138.54,149.46C106.62,96.25,149.18,43.05,239.63,48.37,245,138.82,191.75,181.39,138.54,149.46ZM16.26,88.26c-3.8,64.61,34.21,95,72.21,72.21C111.27,122.47,80.87,84.46,16.26,88.26Z' opacity='0.2'/%3E%3Cpath d='M247.63,47.89a8,8,0,0,0-7.52-7.52c-51.76-3-93.32,12.74-111.18,42.22-11.8,19.48-11.78,43.16-.16,65.74a71.37,71.37,0,0,0-14.17,26.95L98.33,159c7.82-16.33,7.52-33.36-1-47.49C84.09,89.73,53.62,78,15.79,80.27a8,8,0,0,0-7.52,7.52c-2.23,37.83,9.46,68.3,31.25,81.5A45.82,45.82,0,0,0,63.44,176,54.58,54.58,0,0,0,87,170.33l25,25V224a8,8,0,0,0,16,0V194.51a55.61,55.61,0,0,1,12.27-35,73.91,73.91,0,0,0,33.31,8.4,60.9,60.9,0,0,0,31.83-8.86C234.89,141.21,250.67,99.65,247.63,47.89ZM86.06,146.74l-24.41-24.4a8,8,0,0,0-11.31,11.31l24.41,24.41c-9.61,3.18-18.93,2.39-26.94-2.46C32.47,146.31,23.79,124.32,24,96c28.31-.25,50.31,8.47,59.6,23.81C88.45,127.82,89.24,137.14,86.06,146.74Zm111.06-1.36c-13.4,8.11-29.15,8.73-45.15,2l53.69-53.7a8,8,0,0,0-11.31-11.32L140.65,136c-6.76-16-6.15-31.76,2-45.15,13.94-23,47-35.8,89.33-34.83C232.94,98.34,220.14,131.44,197.12,145.38Z'/%3E%3C/svg%3E"); }
+.icone-gota { --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M208,144a80,80,0,0,1-160,0c0-72,80-128,80-128S208,72,208,144Z' opacity='0.2'/%3E%3Cpath d='M174,47.75a254.19,254.19,0,0,0-41.45-38.3,8,8,0,0,0-9.18,0A254.19,254.19,0,0,0,82,47.75C54.51,79.32,40,112.6,40,144a88,88,0,0,0,176,0C216,112.6,201.49,79.32,174,47.75ZM128,216a72.08,72.08,0,0,1-72-72c0-57.23,55.47-105,72-118,16.53,13,72,60.75,72,118A72.08,72.08,0,0,1,128,216Zm55.89-62.66a57.6,57.6,0,0,1-46.56,46.55A8.75,8.75,0,0,1,136,200a8,8,0,0,1-1.32-15.89c16.57-2.79,30.63-16.85,33.44-33.45a8,8,0,0,1,15.78,2.68Z'/%3E%3C/svg%3E"); }
+.icone-fluxo { --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M80,176a32,32,0,1,1-32-32A32,32,0,0,1,80,176Z' opacity='0.2'/%3E%3Cpath d='M245.66,74.34l-32-32a8,8,0,0,0-11.32,11.32L220.69,72H208c-49.33,0-61.05,28.12-71.38,52.92-9.38,22.51-16.92,40.59-49.48,42.84a40,40,0,1,0,.1,16c43.26-2.65,54.34-29.15,64.14-52.69C161.41,107,169.33,88,208,88h12.69l-18.35,18.34a8,8,0,0,0,11.32,11.32l32-32A8,8,0,0,0,245.66,74.34ZM48,200a24,24,0,1,1,24-24A24,24,0,0,1,48,200Z'/%3E%3C/svg%3E"); }
+.icone-sol { --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M184,128a56,56,0,1,1-56-56A56,56,0,0,1,184,128Z' opacity='0.2'/%3E%3Cpath d='M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z'/%3E%3C/svg%3E"); }
+.icone-comida { --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M224,112a96,96,0,0,1-56,87.3V208a8,8,0,0,1-8,8H96a8,8,0,0,1-8-8v-8.7A96,96,0,0,1,32,112Z' opacity='0.2'/%3E%3Cpath d='M224,104h-8.37a88,88,0,0,0-175.26,0H32a8,8,0,0,0-8,8,104.35,104.35,0,0,0,56,92.28V208a16,16,0,0,0,16,16h64a16,16,0,0,0,16-16v-3.72A104.35,104.35,0,0,0,232,112,8,8,0,0,0,224,104ZM173.48,56.23q2.75,2.25,5.27,4.75a87.92,87.92,0,0,0-49.15,43H100.1A72.26,72.26,0,0,1,168,56C169.83,56,171.66,56.09,173.48,56.23Zm15.91,18.2A71.45,71.45,0,0,1,199.54,104H148.12A71.84,71.84,0,0,1,189.39,74.43ZM128,40a71.87,71.87,0,0,1,19,2.57A88.36,88.36,0,0,0,83.33,104H56.46A72.08,72.08,0,0,1,128,40Zm36.66,152A8,8,0,0,0,160,199.3V208H96v-8.7A8,8,0,0,0,91.34,192a88.29,88.29,0,0,1-51-72H215.63A88.29,88.29,0,0,1,164.66,192Z'/%3E%3C/svg%3E"); }
+.icone-flor { --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M169.23,66v0A80,80,0,0,0,128,136,80,80,0,0,0,86.77,66v0C100,38,128,24,128,24S156,38,169.23,66Z' opacity='0.2'/%3E%3Cpath d='M208,48a87.48,87.48,0,0,0-35.36,7.43c-15.1-25.37-39.92-38-41.06-38.59a8,8,0,0,0-7.16,0c-1.14.58-26,13.22-41.06,38.59A87.48,87.48,0,0,0,48,48a8,8,0,0,0-8,8V96a88.11,88.11,0,0,0,80,87.63v35.43L83.58,200.84a8,8,0,1,0-7.16,14.32l48,24a8,8,0,0,0,7.16,0l48-24a8,8,0,0,0-7.16-14.32L136,219.06V183.63A88.11,88.11,0,0,0,216,96V56A8,8,0,0,0,208,48ZM128,33.21c6.65,4.08,21.08,14.19,30.64,30A88.46,88.46,0,0,0,128,99.36,88.4,88.4,0,0,0,97.36,63.19C106.93,47.4,121.35,37.29,128,33.21ZM56,96V64.44A72.1,72.1,0,0,1,120,136v31.56A72.1,72.1,0,0,1,56,96Zm144,0a72.1,72.1,0,0,1-64,71.56V136a72.1,72.1,0,0,1,64-71.56Z'/%3E%3C/svg%3E"); }
+.icone-ar { --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M120,96a24,24,0,1,1,24-24A24,24,0,0,1,120,96Zm88-16a24,24,0,1,0,24,24A24,24,0,0,0,208,80Zm-56,80a24,24,0,1,0,24,24A24,24,0,0,0,152,160Z' opacity='0.2'/%3E%3Cpath d='M184,184a32,32,0,0,1-32,32c-13.7,0-26.95-8.93-31.5-21.22a8,8,0,0,1,15-5.56C137.74,195.27,145,200,152,200a16,16,0,0,0,0-32H40a8,8,0,0,1,0-16H152A32,32,0,0,1,184,184Zm-64-80a32,32,0,0,0,0-64c-13.7,0-26.95,8.93-31.5,21.22a8,8,0,0,0,15,5.56C105.74,60.73,113,56,120,56a16,16,0,0,1,0,32H24a8,8,0,0,0,0,16Zm88-32c-13.7,0-26.95,8.93-31.5,21.22a8,8,0,0,0,15,5.56C193.74,92.73,201,88,208,88a16,16,0,0,1,0,32H32a8,8,0,0,0,0,16H208a32,32,0,0,0,0-64Z'/%3E%3C/svg%3E"); }
+.icone-robo { --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M200,56H56A24,24,0,0,0,32,80V192a24,24,0,0,0,24,24H200a24,24,0,0,0,24-24V80A24,24,0,0,0,200,56ZM164,184H92a20,20,0,0,1,0-40h72a20,20,0,0,1,0,40Z' opacity='0.2'/%3E%3Cpath d='M200,48H136V16a8,8,0,0,0-16,0V48H56A32,32,0,0,0,24,80V192a32,32,0,0,0,32,32H200a32,32,0,0,0,32-32V80A32,32,0,0,0,200,48Zm16,144a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V80A16,16,0,0,1,56,64H200a16,16,0,0,1,16,16ZM72,108a12,12,0,1,1,12,12A12,12,0,0,1,72,108Zm88,0a12,12,0,1,1,12,12A12,12,0,0,1,160,108Zm4,28H92a28,28,0,0,0,0,56h72a28,28,0,0,0,0-56Zm-24,16v24H116V152ZM80,164a12,12,0,0,1,12-12h8v24H92A12,12,0,0,1,80,164Zm84,12h-8V152h8a12,12,0,0,1,0,24Z'/%3E%3C/svg%3E"); }
+.icone-mao { --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M216,116v36a80,80,0,0,1-80,80c-44.18,0-55.81-24-93.32-90a20,20,0,0,1,34.64-20L96,152V44a20,20,0,0,1,40,0v56a20,20,0,0,1,40,0v16a20,20,0,0,1,40,0Z' opacity='0.2'/%3E%3Cpath d='M196,88a27.86,27.86,0,0,0-13.35,3.39A28,28,0,0,0,144,74.7V44a28,28,0,0,0-56,0v80l-3.82-6.13A28,28,0,0,0,35.73,146l4.67,8.23C74.81,214.89,89.05,240,136,240a88.1,88.1,0,0,0,88-88V116A28,28,0,0,0,196,88Zm12,64a72.08,72.08,0,0,1-72,72c-37.63,0-47.84-18-81.68-77.68l-4.69-8.27,0-.05A12,12,0,0,1,54,121.61a11.88,11.88,0,0,1,6-1.6,12,12,0,0,1,10.41,6,1.76,1.76,0,0,0,.14.23l18.67,30A8,8,0,0,0,104,152V44a12,12,0,0,1,24,0v68a8,8,0,0,0,16,0V100a12,12,0,0,1,24,0v20a8,8,0,0,0,16,0v-4a12,12,0,0,1,24,0Z'/%3E%3C/svg%3E"); }
+.icone-som { --icone: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256'%3E%3Cpath d='M80,88v80H32a8,8,0,0,1-8-8V96a8,8,0,0,1,8-8Z' opacity='0.2'/%3E%3Cpath d='M155.51,24.81a8,8,0,0,0-8.42.88L77.25,80H32A16,16,0,0,0,16,96v64a16,16,0,0,0,16,16H77.25l69.84,54.31A8,8,0,0,0,160,224V32A8,8,0,0,0,155.51,24.81ZM32,96H72v64H32ZM144,207.64,88,164.09V91.91l56-43.55Zm54-106.08a40,40,0,0,1,0,52.88,8,8,0,0,1-12-10.58,24,24,0,0,0,0-31.72,8,8,0,0,1,12-10.58ZM248,128a79.9,79.9,0,0,1-20.37,53.34,8,8,0,0,1-11.92-10.67,64,64,0,0,0,0-85.33,8,8,0,1,1,11.92-10.67A79.83,79.83,0,0,1,248,128Z'/%3E%3C/svg%3E"); }
+
+
+/* ===== paginas/home.css ===== */
 /* ==========================================================
    PÁGINA INÍCIO
+   A imagem do mascote (.mascote-img) está em componentes.css,
+   porque a página do mascote usa a mesma.
 ========================================================== */
 
 
@@ -1074,7 +1136,7 @@ nav a:active {
 
     text-align: center;
 
-    padding-top: clamp(12px, 4vh, 32px);
+    padding-top: clamp(28px, 8vh, 64px);
 }
 
 /* Blur atrás do mascote */
@@ -1094,7 +1156,7 @@ nav a:active {
     background: radial-gradient(
         circle,
         #f7f4f6 0%,
-        #6ae3f9 45%,
+        #aaf96a 45%,
         transparent 70%
     );
 
@@ -1165,7 +1227,7 @@ nav a:active {
     height: 40px;
 
     font-size: 20px;
-    border-radius: 14px;
+    border-radius: var(--raio-folha-pequena);
 }
 
 .info:nth-child(1)::before { content: "💧"; background-color: var(--agua); }
@@ -1310,7 +1372,7 @@ nav a:active {
         width: 56px;
         height: 56px;
         font-size: 28px;
-        border-radius: 18px;
+        border-radius: var(--raio-folha-pequena);
     }
 
     .info h2,
@@ -1338,8 +1400,7 @@ nav a:active {
 }
 
 
-/* >>>>>>>>>> paginas/cuidar.css <<<<<<<<<< */
-
+/* ===== paginas/cuidar.css ===== */
 /* ==========================================================
    PÁGINA CUIDAR
 ========================================================== */
@@ -1347,6 +1408,7 @@ nav a:active {
 
 /* =========================
    RITMO E ESPAÇAMENTO
+   (--espaco-secao vem do main, em base.css)
 ========================= */
 
 .tipo_planta {
@@ -1359,6 +1421,7 @@ nav a:active {
     margin-top: var(--espaco-secao);
 }
 
+/* mais respiro ao redor do botão (a ação principal) */
 .irrigacao {
     margin-top: calc(var(--espaco-secao) + 8px);
 }
@@ -1381,7 +1444,7 @@ nav a:active {
 
     padding: clamp(20px, 5.5vw, 26px);
 
-    background: linear-gradient(135deg, var(--menta), var(--agua));
+    background: linear-gradient(135deg, var(--menta), var(--pessego));
     border-radius: 28px;
 }
 
@@ -1533,6 +1596,7 @@ nav a:active {
 
 /* =========================
    IRRIGAÇÃO
+   O botão em si (cor, tamanho, estados) está em componentes.css.
 ========================= */
 
 .regar {
@@ -1747,10 +1811,11 @@ nav a:active {
 }
 
 
-/* >>>>>>>>>> paginas/mascote.css <<<<<<<<<< */
-
+/* ===== paginas/mascote.css ===== */
 /* ==========================================================
    PÁGINA MASCOTE
+   A imagem (.mascote-img) e o botão (.btnPersonalizar) têm
+   as regras principais em componentes.css.
 ========================================================== */
 
 
@@ -1985,10 +2050,12 @@ nav a:active {
 }
 
 
-/* >>>>>>>>>> paginas/cadastro.css <<<<<<<<<< */
-
+/* ===== paginas/cadastro.css ===== */
 /* ==========================================================
    PÁGINA CADASTRO
+   O comportamento de "card selecionável" (contorno menta + ✓)
+   está em componentes.css. Aqui ficam só tamanhos e cores
+   de cada tipo de card.
 ========================================================== */
 
 
@@ -2223,6 +2290,7 @@ main.cadastro > * + * {
     color: var(--texto);
 }
 
+/* o selinho ✓ é um pouco maior nos cards grandes */
 .cardMascote.selecionado::after {
     width: 24px;
     height: 24px;
@@ -2261,6 +2329,26 @@ main.cadastro > * + * {
     border-radius: 50%;
 }
 
+/* Ícone de cada opção (Phosphor, duotone) dentro do círculo colorido.
+   A opção é reconhecida pelo data-irrigacao do HTML. */
+.cardIrrigacao::before {
+    content: "";
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 46%;
+}
+
+.cardIrrigacao[data-irrigacao="automatica"]::before {
+    background-color: #D4F0E1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='%232F7A5C'%3E%3Cpath d='M200,56H56A24,24,0,0,0,32,80V192a24,24,0,0,0,24,24H200a24,24,0,0,0,24-24V80A24,24,0,0,0,200,56ZM164,184H92a20,20,0,0,1,0-40h72a20,20,0,0,1,0,40Z' opacity='0.2'/%3E%3Cpath d='M200,48H136V16a8,8,0,0,0-16,0V48H56A32,32,0,0,0,24,80V192a32,32,0,0,0,32,32H200a32,32,0,0,0,32-32V80A32,32,0,0,0,200,48Zm16,144a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V80A16,16,0,0,1,56,64H200a16,16,0,0,1,16,16ZM72,108a12,12,0,1,1,12,12A12,12,0,0,1,72,108Zm88,0a12,12,0,1,1,12,12A12,12,0,0,1,160,108Zm4,28H92a28,28,0,0,0,0,56h72a28,28,0,0,0,0-56Zm-24,16v24H116V152ZM80,164a12,12,0,0,1,12-12h8v24H92A12,12,0,0,1,80,164Zm84,12h-8V152h8a12,12,0,0,1,0,24Z'/%3E%3C/svg%3E");
+}
+
+.cardIrrigacao[data-irrigacao="manual"]::before {
+    background-color: #D6EEF9;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='%232A87A8'%3E%3Cpath d='M216,116v36a80,80,0,0,1-80,80c-44.18,0-55.81-24-93.32-90a20,20,0,0,1,34.64-20L96,152V44a20,20,0,0,1,40,0v56a20,20,0,0,1,40,0v16a20,20,0,0,1,40,0Z' opacity='0.2'/%3E%3Cpath d='M196,88a27.86,27.86,0,0,0-13.35,3.39A28,28,0,0,0,144,74.7V44a28,28,0,0,0-56,0v80l-3.82-6.13A28,28,0,0,0,35.73,146l4.67,8.23C74.81,214.89,89.05,240,136,240a88.1,88.1,0,0,0,88-88V116A28,28,0,0,0,196,88Zm12,64a72.08,72.08,0,0,1-72,72c-37.63,0-47.84-18-81.68-77.68l-4.69-8.27,0-.05A12,12,0,0,1,54,121.61a11.88,11.88,0,0,1,6-1.6,12,12,0,0,1,10.41,6,1.76,1.76,0,0,0,.14.23l18.67,30A8,8,0,0,0,104,152V44a12,12,0,0,1,24,0v68a8,8,0,0,0,16,0V100a12,12,0,0,1,24,0v20a8,8,0,0,0,16,0v-4a12,12,0,0,1,24,0Z'/%3E%3C/svg%3E");
+}
+
 .cardIrrigacao h3 {
     font-family: 'Fredoka', sans-serif;
     font-size: clamp(15px, 4.2vw, 17px);
@@ -2277,6 +2365,7 @@ main.cadastro > * + * {
 
 /* =========================
    BOTÃO FINAL
+   (.btnComecar: estilo em componentes.css)
 ========================= */
 
 
@@ -2357,8 +2446,7 @@ main.cadastro > * + * {
 }
 
 
-/* >>>>>>>>>> paginas/aprender.css <<<<<<<<<< */
-
+/* ===== paginas/aprender.css ===== */
 /* ==========================================================
    PÁGINA APRENDER (lista de lições)
 ========================================================== */
@@ -2414,7 +2502,7 @@ main.cadastro > * + * {
 .blocoAprender {
     margin-top: clamp(32px, 8vw, 48px);
 
-    --acento: var(--menta);  
+    --acento: var(--menta);   /* cor padrão, trocada por bloco abaixo */
 }
 
 .blocoAprender:nth-of-type(2) { --acento: var(--agua); }
@@ -2609,10 +2697,18 @@ main.cadastro > * + * {
 }
 
 
-/* >>>>>>>>>> paginas/licoes.css <<<<<<<<<< */
-
+/* ===== paginas/licoes.css ===== */
 /* ==========================================================
    LIÇÕES
+   Ordem deste arquivo:
+   1. Base de toda lição (título, ritmo, voltar, imagem)
+   2. Blocos que aparecem em quase toda lição
+      (curiosidade, conexão com o PlantAmigo, fechamento)
+   3. O que é exclusivo de cada lição (1 a 5)
+
+   Cards, painéis, opções, acordeão e listas já estão em
+   componentes.css. Uma lição nova só precisa de uma seção
+   aqui se tiver algo que ainda não existe.
 ========================================================== */
 
 
@@ -2953,42 +3049,77 @@ main.cadastro > * + * {
    LIÇÃO 2 — ÁGUA E UMIDADE
 --------------------------------------------------------- */
 
-.aguaPlanta {
-    text-align: left;
+/* Frase de abertura: um pouco maior, para guiar o olhar */
+.licao .introducaoLicao > p {
+    font-size: clamp(17px, 4.6vw, 19px);
+    line-height: 1.5;
+    color: var(--texto);
 }
 
-/* Gota caindo sobre a plantinha: único movimento da página */
-.ilustracaoAgua {
-    position: relative;
+/* "Por que a planta precisa de água?": duas listas curtas em vez de um parágrafo */
+.beneficios {
+    margin-top: clamp(20px, 5vw, 26px);
+}
 
+.beneficios h3 {
     display: flex;
-    justify-content: center;
-    align-items: flex-end;
+    align-items: center;
+    gap: 8px;
 
-    height: clamp(110px, 28vw, 150px);
-    margin-top: clamp(20px, 5vw, 28px);
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(15.5px, 4.2vw, 17px);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--tinta);
 }
 
-.plantaAgua {
-    font-size: clamp(54px, 15vw, 76px);
-    line-height: 1;
+.beneficios h3 .icone {
+    font-size: 1.35em;
 }
 
-.gotaAgua {
-    position: absolute;
-    top: 0;
-    left: 50%;
+.beneficios ul {
+    display: grid;
+    gap: 10px;
 
-    font-size: clamp(28px, 8vw, 38px);
-    line-height: 1;
-
-    animation: cair 2.6s ease-in-out infinite;
+    margin-top: 12px;
+    padding: 0;
+    list-style: none;
 }
 
-@keyframes cair {
-    0%, 100% { transform: translate(-50%, -4px); opacity: 0.75; }
-    50%      { transform: translate(-50%, 10px); opacity: 1; }
+.beneficios li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    padding: 10px 16px 10px 10px;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(15px, 4vw, 16.5px);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--texto);
+
+    background-color: var(--fundo-item);
+    border-radius: 18px;
 }
+
+.bolinha {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+
+    width: 46px;
+    aspect-ratio: 1;
+
+    font-size: 27px;
+
+    border-radius: var(--raio-folha-pequena);
+}
+
+/* água = azul, luz do sol e planta = verde */
+.beneficios--agua .bolinha { background-color: #D6EEF9; color: #2A87A8; }
+.beneficios--sol  .bolinha { background-color: #D4F0E1; color: #2F7A5C; }
+
 
 /* As opções ficam em .opcoesUmidade (coluna) */
 .opcoesUmidade {
@@ -3339,6 +3470,20 @@ main.cadastro > * + * {
 
 @media (min-width: 700px) {
 
+    /* Lição 2: as duas listas lado a lado */
+    .aguaPlanta {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 28px;
+    }
+
+    .aguaPlanta h2 { grid-column: 1 / -1; }
+
+    .beneficios li  { font-size: 19px; gap: 16px; padding: 12px 20px 12px 12px; }
+    .beneficios h3  { font-size: 20px; }
+    .bolinha        { width: 54px; font-size: 32px; }
+
+
     /* Base */
     .licao section + section { margin-top: 64px; }
 
@@ -3435,8 +3580,525 @@ main.cadastro > * + * {
 }
 
 
-/* >>>>>>>>>> paginas/quiz.css <<<<<<<<<< */
+/* ===== paginas/configuracoes.css ===== */
+/* ==========================================================
+   PÁGINA CONFIGURAÇÕES
+   Três cards (planta, irrigação, sons), todos com o mesmo
+   desenho: título com ícone, conteúdo, botão de salvar.
+   O botão principal (.botaoSalvarConfiguracao) tem o estilo
+   em componentes.css; os ícones (.icone) estão em icones.css.
+========================================================== */
 
+
+/* =========================
+   ESTRUTURA
+========================= */
+
+main:has(.cardConfiguracao) {
+    padding-top: clamp(20px, 5vh, 32px);
+    padding-bottom: clamp(32px, 8vh, 56px);
+}
+
+main:has(.cardConfiguracao) > * + * {
+    margin-top: clamp(18px, 5vw, 24px);
+}
+
+.descricaoConfiguracoes {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(20px, 5.8vw, 26px);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--tinta);
+}
+
+
+/* =========================
+   CARD
+========================= */
+
+.cardConfiguracao {
+    padding: var(--pad-modulo);
+
+    background-color: var(--painel);
+    border-radius: var(--raio-folha);
+    box-shadow: 0 0 0 2px var(--fio-painel);
+}
+
+
+/* Título do card: ícone + título + frase de apoio */
+.tituloCardConfiguracao {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    margin-bottom: clamp(18px, 5vw, 24px);
+}
+
+.iconeTituloConfiguracao {
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    width: 48px;
+    height: 48px;
+
+    font-size: 26px;
+
+    border-radius: var(--raio-folha-pequena);
+}
+
+/* cada card tem sua cor: planta (verde), água (azul), som (rosa) */
+.iconeTituloConfiguracao--planta { background-color: #D4F0E1; color: #2F7A5C; }
+.iconeTituloConfiguracao--agua   { background-color: #D6EEF9; color: #2A87A8; }
+.iconeTituloConfiguracao--som    { background-color: var(--rosa); color: #9B3F76; }
+
+.tituloCardConfiguracao h2 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(18px, 5.2vw, 22px);
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--petroleo);
+}
+
+.tituloCardConfiguracao p {
+    margin-top: 2px;
+
+    font-size: clamp(13.5px, 3.7vw, 15px);
+    line-height: 1.4;
+    color: var(--texto-suave);
+}
+
+
+/* =========================
+   CAMPOS (texto e lista)
+========================= */
+
+.campoConfiguracao {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.campoConfiguracao + .campoConfiguracao {
+    margin-top: clamp(14px, 4vw, 18px);
+}
+
+.campoConfiguracao label {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(15px, 4.2vw, 17px);
+    font-weight: 600;
+    color: var(--tinta);
+}
+
+.campoConfiguracao input,
+.campoConfiguracao select {
+    width: 100%;
+    min-height: 52px;
+    padding: 12px 18px;
+
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;               /* 16px+ evita o zoom automático no iPhone */
+    color: var(--texto);
+
+    background-color: var(--card);
+    border: 2px solid #CBE3D6;
+    border-radius: 18px;
+
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.campoConfiguracao input::placeholder {
+    color: #8A9A92;
+}
+
+.campoConfiguracao input:focus,
+.campoConfiguracao select:focus {
+    outline: none;
+
+    border-color: var(--menta-forte);
+    box-shadow: 0 0 0 4px rgba(159, 216, 192, 0.28);
+}
+
+/* Lista suspensa: seta própria (a do navegador some com appearance: none) */
+.campoConfiguracao select {
+    -webkit-appearance: none;
+            appearance: none;
+
+    padding-right: 48px;
+    cursor: pointer;
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232E2C28' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    background-size: 18px;
+}
+
+/* itens da lista: tamanho normal (sem herdar a altura mínima do campo) */
+.campoConfiguracao select option {
+    min-height: 0;
+    padding: 8px 12px;
+
+    font-size: 16px;
+    color: var(--texto);
+    background-color: #FFFFFF;
+}
+
+.botaoSalvarConfiguracao {
+    width: 100%;
+    margin-top: clamp(20px, 5vw, 26px);
+    padding: 16px 20px;
+
+    font-size: clamp(16px, 4.4vw, 18px);
+
+    border-radius: 18px;
+}
+
+
+/* =========================
+   MENSAGEM DE CONFIRMAÇÃO
+   Fica vazia (sem ocupar espaço) até o JavaScript escrever nela.
+========================= */
+
+.mensagemConfiguracao {
+    font-size: clamp(14px, 3.8vw, 15px);
+    font-weight: 700;
+    text-align: center;
+    color: var(--verde-escuro);
+}
+
+.mensagemConfiguracao:not(:empty) {
+    margin-top: 14px;
+    padding: 10px 14px;
+
+    background-color: var(--fundo-acerto);
+    border-radius: 14px;
+}
+
+/* se o JavaScript marcar a mensagem como erro */
+.mensagemConfiguracao.erro {
+    color: var(--marrom-atencao);
+    background-color: var(--painel-atencao);
+}
+
+
+/* =========================
+   MODO DE IRRIGAÇÃO (duas opções)
+   O círculo do rádio fica escondido (mas continua funcionando
+   com teclado e leitor de tela); a opção inteira vira o botão.
+========================= */
+
+/* (.opcoesIrrigacao também existe no cadastro, por isso o prefixo .cardConfiguracao) */
+.cardConfiguracao .opcoesIrrigacao {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.opcaoIrrigacao {
+    position: relative;
+    display: block;
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+.opcaoIrrigacao input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.conteudoOpcaoIrrigacao {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    padding: 14px 16px;
+
+    background-color: var(--fundo-item);
+    border: 2px solid transparent;
+    border-radius: 18px;
+
+    transition: border-color 0.2s ease, background-color 0.2s ease,
+                box-shadow 0.2s ease, transform 0.12s ease;
+}
+
+.opcaoIrrigacao:hover .conteudoOpcaoIrrigacao {
+    border-color: rgba(159, 216, 192, 0.6);
+}
+
+.opcaoIrrigacao:active .conteudoOpcaoIrrigacao {
+    transform: scale(0.99);
+}
+
+.iconeOpcao {
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    width: 46px;
+    height: 46px;
+
+    font-size: 24px;
+    color: var(--tinta);
+
+    background-color: var(--card);
+    border-radius: var(--raio-folha-pequena);
+
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.conteudoOpcaoIrrigacao > span:nth-child(2) {
+    flex: 1;
+    min-width: 0;
+}
+
+.conteudoOpcaoIrrigacao strong {
+    display: block;
+
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(16px, 4.4vw, 18px);
+    font-weight: 600;
+    color: var(--tinta);
+}
+
+.conteudoOpcaoIrrigacao small {
+    display: block;
+    margin-top: 2px;
+
+    font-size: clamp(13px, 3.6vw, 14.5px);
+    line-height: 1.4;
+    color: var(--texto-suave);
+}
+
+/* selo de marcado (aparece só na opção escolhida) */
+.conteudoOpcaoIrrigacao::after {
+    content: "";
+    flex-shrink: 0;
+
+    width: 24px;
+    height: 24px;
+
+    background-color: var(--card);
+    border: 2px solid #B9D3C6;
+    border-radius: 50%;
+
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* escolhida */
+.opcaoIrrigacao input:checked + .conteudoOpcaoIrrigacao {
+    background-color: var(--fundo-acerto);
+    border-color: var(--menta-forte);
+    box-shadow: 0 0 0 4px rgba(159, 216, 192, 0.25);
+}
+
+.opcaoIrrigacao input:checked + .conteudoOpcaoIrrigacao .iconeOpcao {
+    background-color: #2F7A5C;
+    color: #FFFFFF;
+}
+
+.opcaoIrrigacao input:checked + .conteudoOpcaoIrrigacao::after {
+    background-color: #2F7A5C;
+    border-color: #2F7A5C;
+
+    /* ✓ desenhado em SVG branco */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px;
+}
+
+.opcaoIrrigacao input:focus-visible + .conteudoOpcaoIrrigacao {
+    outline: 3px solid var(--menta-forte);
+    outline-offset: 3px;
+}
+
+
+/* =========================
+   SONS (interruptor liga/desliga)
+========================= */
+
+.linhaSom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    padding: 16px;
+
+    background-color: var(--fundo-item);
+    border-radius: 18px;
+}
+
+.informacaoSom strong {
+    font-family: 'Fredoka', sans-serif;
+    font-size: clamp(16px, 4.4vw, 18px);
+    font-weight: 600;
+    color: var(--tinta);
+}
+
+.informacaoSom p {
+    margin-top: 2px;
+
+    font-size: clamp(13px, 3.6vw, 14.5px);
+    line-height: 1.4;
+    color: var(--texto-suave);
+}
+
+.interruptor {
+    position: relative;
+    flex-shrink: 0;
+
+    display: block;
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+.interruptor input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.trilhoInterruptor {
+    position: relative;
+    display: block;
+
+    width: 62px;
+    height: 36px;
+
+    background-color: #B9C9C0;
+    border-radius: 999px;
+
+    transition: background-color 0.2s ease;
+}
+
+/* bolinha que desliza */
+.trilhoInterruptor::after {
+    content: "";
+
+    position: absolute;
+    top: 4px;
+    left: 4px;
+
+    width: 28px;
+    height: 28px;
+
+    background-color: #FFFFFF;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(30, 59, 62, 0.25);
+
+    transition: transform 0.2s ease;
+}
+
+.interruptor input:checked + .trilhoInterruptor {
+    background-color: #2F7A5C;
+}
+
+.interruptor input:checked + .trilhoInterruptor::after {
+    transform: translateX(26px);
+}
+
+.interruptor input:focus-visible + .trilhoInterruptor {
+    outline: 3px solid var(--menta-forte);
+    outline-offset: 3px;
+}
+
+
+/* =========================
+   RODAPÉ
+========================= */
+
+.rodapeConfiguracoes {
+    padding-top: 6px;
+
+    font-size: clamp(14px, 3.8vw, 15px);
+    font-weight: 600;
+    text-align: center;
+    color: var(--texto-suave);
+}
+
+
+/* =========================
+   TABLET E TELAS GRANDES
+========================= */
+
+@media (min-width: 700px) {
+
+    .descricaoConfiguracoes {
+        font-size: 32px;
+    }
+
+    .iconeTituloConfiguracao {
+        width: 60px;
+        height: 60px;
+        font-size: 32px;
+    }
+
+    .tituloCardConfiguracao h2 {
+        font-size: 28px;
+    }
+
+    .tituloCardConfiguracao p {
+        font-size: 18px;
+    }
+
+    .campoConfiguracao label {
+        font-size: 20px;
+    }
+
+    .campoConfiguracao input,
+    .campoConfiguracao select {
+        min-height: 60px;
+        font-size: 18px;
+    }
+
+    /* as duas opções ficam lado a lado */
+    .cardConfiguracao .opcoesIrrigacao {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .conteudoOpcaoIrrigacao {
+        padding: 18px 20px;
+    }
+
+    .iconeOpcao {
+        width: 56px;
+        height: 56px;
+        font-size: 30px;
+    }
+
+    .conteudoOpcaoIrrigacao strong,
+    .informacaoSom strong {
+        font-size: 22px;
+    }
+
+    .conteudoOpcaoIrrigacao small,
+    .informacaoSom p {
+        font-size: 17px;
+    }
+
+    .botaoSalvarConfiguracao {
+        padding: 20px;
+        font-size: 22px;
+    }
+
+    .mensagemConfiguracao {
+        font-size: 17px;
+    }
+
+    .rodapeConfiguracoes {
+        font-size: 18px;
+    }
+}
+
+
+/* ===== paginas/quiz.css ===== */
 /* ==========================================================
    QUIZ
    Serve para todos os quizzes (quiz1, quiz2...).
@@ -3784,8 +4446,7 @@ main.cadastro > * + * {
 }
 
 
-/* >>>>>>>>>> assinatura.css <<<<<<<<<< */
-
+/* ===== assinatura.css ===== */
 /* ==========================================================
    ASSINATURA DO PLANTAMIGO
    Cantos de folha: dois cantos redondos, dois quase retos.
@@ -3803,6 +4464,7 @@ main.cadastro > * + * {
 .cuidadosCacto,
 .perguntaQuiz,
 .necessidadesPlanta,
+.aguaPlanta,
 .necessidadeAgua,
 .necessidadeLuz,
 .cuidadosImportantes,
